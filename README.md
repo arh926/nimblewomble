@@ -15,6 +15,7 @@ devtools::install_github("arh926/nimblewomble")
 ```
 
 ## Example
+![Rplot02](https://github.com/user-attachments/assets/9143789f-8e12-4373-bb46-5fa8eef622c3)
 
 This is a basic example which shows you the basic workflow on a simulated data:
 
@@ -55,6 +56,7 @@ p1 = sp_ggplot(data_frame = data.frame(grid,
                                        sig = gradients$estimate.sx$sig))
 p1
 ```
+![Rplot](https://github.com/user-attachments/assets/7cac91d6-ce28-4106-84d7-cba45031d1b8)
 
 ```
 curve = # Pick a curve from the surface that is interesting to you
@@ -75,4 +77,5 @@ p2 + geom_path(curve, mapping = aes(x, y), linewidth = 2) +
   geom_path(curve, mapping = aes(x, y), colour = c(col.pts, NA), linewidth = 1, na.rm = TRUE)
 
 ```
+![Rplot01](https://github.com/user-attachments/assets/13153dcb-7263-4dfa-9371-7da0bd1ed587)
 
