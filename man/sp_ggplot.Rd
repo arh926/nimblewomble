@@ -11,6 +11,7 @@ sp_ggplot(
   legend.key.height = 0.7,
   legend.key.width = 0.4,
   text.size = 10,
+  point.size = 0.7,
   palette = "Spectral"
 )
 }

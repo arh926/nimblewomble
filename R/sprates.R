@@ -84,7 +84,7 @@ sprates <- function(coords = NULL,
     estimate.sxy = data.frame(round(t(apply(batch.sxy.mcmc, 2, quantile, probs = c(0.5, 0.025, 0.975))), 3))
     estimate.syy = data.frame(round(t(apply(batch.syy.mcmc, 2, quantile, probs = c(0.5, 0.025, 0.975))), 3))
 
-    colnames(estimate.sx) = colnames(estimate.sy) = colnames(estimate.sxx) = colnames(estimate.sxy) = colnames(estimate.syy) = c("true", "50%", "2.5%", "97.5%")
+    colnames(estimate.sx) = colnames(estimate.sy) = colnames(estimate.sxx) = colnames(estimate.sxy) = colnames(estimate.syy) = c("50%", "2.5%", "97.5%")
     estimate.sx$sig = significance(data_frame = estimate.sx)
     estimate.sy$sig = significance(data_frame = estimate.sy)
     estimate.sxx$sig = significance(data_frame = estimate.sxx)
@@ -94,16 +94,16 @@ sprates <- function(coords = NULL,
 
 
   if(kernel == "matern1"){
-    return(list(sx.mcmc = batch.sx.mcmc,
-                sy.mcmc = batch.sy.mcmc,
+    return(list(sx.mcmc = coda::as.mcmc(batch.sx.mcmc),
+                sy.mcmc = coda::as.mcmc(batch.sy.mcmc),
                 estimate.sx = estimate.sx,
                 estimate.sy = estimate.sy))
   }else{
-    return(list(sx.mcmc = batch.sx.mcmc,
-                sy.mcmc = batch.sy.mcmc,
-                sxx.mcmc = batch.sxx.mcmc,
-                sxy.mcmc = batch.sxy.mcmc,
-                syy.mcmc = batch.syy.mcmc,
+    return(list(sx.mcmc = coda::as.mcmc(batch.sx.mcmc),
+                sy.mcmc = coda::as.mcmc(batch.sy.mcmc),
+                sxx.mcmc = coda::as.mcmc(batch.sxx.mcmc),
+                sxy.mcmc = coda::as.mcmc(batch.sxy.mcmc),
+                syy.mcmc = coda::as.mcmc(batch.syy.mcmc),
                 estimate.sx = estimate.sx,
                 estimate.sy = estimate.sy,
                 estimate.sxx = estimate.sxx,

@@ -7,9 +7,14 @@ Authors@R: c(
       "Aritra", "Halder",
       email = "aritra.halder@drexel.edu",
       role = c("aut", "cre")
+    ),
+    person(
+      "Sudipto", "Banerjee",
+      email = "sudipto@ucla.edu",
+      role = c("aut")
     )
   )
-Description: Performs Baysian Wombling using nimble see https://doi.org/10.1198/016214506000000041 and https://doi.org/10.1080/01621459.2023.2177166 for more details.
+Description: Performs Baysian Wombling using nimble. For more details see, Banerjee and Gelfand (2006) <doi.org/10.1198/016214506000000041> and Halder, Banerjee and Dey (2024) <doi.org/10.1080/01621459.2023.2177166>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

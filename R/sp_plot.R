@@ -20,6 +20,7 @@ sp_ggplot <- function(data_frame = NULL,
                       legend.key.height = 0.7,#1.5,
                       legend.key.width = 0.4,#0.6,
                       text.size = 10, #20,
+                      point.size = 0.7, #1.2,
                       palette = "Spectral"){
 
   if(sp & is.null(shape)) stop("Please provide a shape file!")
@@ -89,7 +90,7 @@ sp_ggplot <- function(data_frame = NULL,
                     label_size = 2.5) +
       geom_point(data = coords,
                  mapping = aes_string(x = cnames[1], y = cnames[2]),
-                 size = 1.2, color = color.pt,
+                 size = point.size, color = color.pt,
                  fill = col.pt,  stroke = 0.5, pch = 21, na.rm = TRUE) +
       theme(axis.line = element_line(linewidth = 0.2),
             axis.title = element_text(size = 15),
