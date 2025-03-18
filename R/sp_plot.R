@@ -8,7 +8,12 @@
 #' @param text.size size of legend text (defaults to 10)
 #' @param palette (optional) color palette
 #' @keywords sp_plot
-#' @import ggplot2 cowplot MBA metR sf
+#' @importFrom ggplot2 ggplot
+#' @import cowplot
+#' @import MBA
+#' @import metR
+#' @import sf
+#' @export
 sp_ggplot <- function(data_frame = NULL,
                       sp = FALSE,
                       shape = NULL,

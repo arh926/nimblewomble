@@ -1,16 +1,15 @@
 Package: nimblewomble
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Bayesian Wombling using nimble
 Version: 0.1.0
 Authors@R: c(
     person(
-      "Jane", "Doe",
-      email = "jane@example.com",
+      "Aritra", "Halder",
+      email = "aritra.halder@drexel.edu",
       role = c("aut", "cre")
     )
   )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
+Description: Performs Baysian Wombling using nimble see https://doi.org/10.1198/016214506000000041 and https://doi.org/10.1080/01621459.2023.2177166 for more details.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -20,5 +19,6 @@ Imports:
     MBA,
     metR,
     nimble,
+    patchwork,
     sf
 RoxygenNote: 7.3.2
