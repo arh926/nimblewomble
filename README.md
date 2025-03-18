@@ -37,7 +37,7 @@ zbeta = zbeta_samples(y = y, coords = coords,
                       kernel = "matern1")
 ```
 
-```
+``` r
 xsplit = ysplit = seq(-10, 10, by = 1)[-c(1, 21)]
 grid = as.matrix(expand.grid(xsplit, ysplit), ncol = 2)
 colnames(grid) = c("x", "y")
@@ -58,7 +58,7 @@ p1
 ```
 ![Rplot](https://github.com/user-attachments/assets/7cac91d6-ce28-4106-84d7-cba45031d1b8)
 
-```
+``` r
 curve = # Pick a curve from the surface that is interesting to you
 wm = spwombling(coords = coords,
                 curve = curve,
