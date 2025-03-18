@@ -17,7 +17,7 @@ devtools::install_github("arh926/nimblewomble")
 ## Example
 ![Rplot02](https://github.com/user-attachments/assets/9143789f-8e12-4373-bb46-5fa8eef622c3)
 
-This is a basic example which shows you the basic workflow on a simulated data:
+This is a basic example which shows you the workflow on a simulated data:
 
 ``` r
 require(nimble)
@@ -46,7 +46,7 @@ gradients = sprates(grid = grid,
                     model = zbeta,
                     kernel = "matern1")
                     require(ggplot2)
-
+require(ggplot2)
 require(cowplot)
 require(MBA)
 require(metR)
