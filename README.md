@@ -61,7 +61,7 @@ p1
 ![Rplot](https://github.com/user-attachments/assets/7cac91d6-ce28-4106-84d7-cba45031d1b8)
 
 
-### Wombling Measure: Predicitve inference on Line Inetgrals
+### Wombling Measure: Predicitve inference on Line Integrals
 ``` r
 curve = # Pick a curve from the surface that is interesting to you
 wm = spwombling(coords = coords,

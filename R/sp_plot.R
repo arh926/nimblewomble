@@ -6,6 +6,9 @@
 #' @param legend.key.height height of legend (defaults to .7)
 #' @param legend.key.width width of legend (defaults to .4)
 #' @param text.size size of legend text (defaults to 10)
+#' @param point.size size of points to be plotted (defaults to 0.7)
+#' @param extend logical parameter indicating whether to extend the interpolation (defaults to TRUE)
+#' @param title title of the plot (defaults to NULL)
 #' @param palette (optional) color palette
 #' @keywords sp_plot
 #' @importFrom ggplot2 ggplot
@@ -65,7 +68,7 @@ sp_ggplot <- function(data_frame = NULL,
       scale_fill_distiller(palette = palette,
                            label = function(x) sprintf("%.2f", x), na.value = "white", direction = 1) +
       geom_contour2(data = df.gg,
-                    mapping = aes_string(x = cnames[1], y = cnames[2], z = cnames[3], label = "after_stat(level)"),
+                    mapping = aes_string(x = cnames[1], y = cnames[2], z = cnames[3], label = "round(after_stat(level), 2)"),
                     linewidth = 0.1,
                     label_size = 2.5) +
       geom_sf(data = shape, fill = "transparent") +

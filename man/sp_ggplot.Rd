@@ -12,7 +12,9 @@ sp_ggplot(
   legend.key.width = 0.4,
   text.size = 10,
   point.size = 0.7,
-  palette = "Spectral"
+  palette = "Spectral",
+  extend = TRUE,
+  title = NULL
 )
 }
 \arguments{
@@ -28,7 +30,13 @@ sp_ggplot(
 
 \item{text.size}{size of legend text (defaults to 10)}
 
+\item{point.size}{size of points to be plotted (defaults to 0.7)}
+
 \item{palette}{(optional) color palette}
+
+\item{extend}{logical parameter indicating whether to extend the interpolation (defaults to TRUE)}
+
+\item{title}{title of the plot (defaults to NULL)}
 }
 \description{
 Spatial Plot Function
