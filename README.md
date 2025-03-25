@@ -4,7 +4,11 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `nimblewomble` is to perform Bayesian Wombling (boundary analysis) using `nimble`. For more details refer to: _Bayesian Wombling_: Sudipto Banerjee and Alan E. Gelfand<https://doi.org/10.1198/016214506000000041> and _Bayesian Modeling with Curvature Processes_: Aritra Halder, Sudipto Banerjee and Dipak K. Dey <https://doi.org/10.1080/01621459.2023.2177166>
+The goal of `nimblewomble` is to perform Bayesian Wombling (boundary analysis) using `nimble`. 
+
+For more details on point-referenced Wombling please refer to: 
+a. _Bayesian Wombling_: Sudipto Banerjee and Alan E. Gelfand<https://doi.org/10.1198/016214506000000041> 
+b. _Bayesian Modeling with Curvature Processes_: Aritra Halder, Sudipto Banerjee and Dipak K. Dey <https://doi.org/10.1080/01621459.2023.2177166>
 
 ## Installation
 

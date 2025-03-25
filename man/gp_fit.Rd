@@ -7,6 +7,7 @@
 gp_fit(
   coords = NULL,
   y = NULL,
+  X = NULL,
   kernel = c("matern1", "matern2", "gaussian"),
   niter = NULL,
   nburn = NULL
@@ -16,6 +17,8 @@ gp_fit(
 \item{coords}{spatial coordinats (supply as a matrix)}
 
 \item{y}{response}
+
+\item{X}{covariates (supply as a matrix without the intercept)}
 
 \item{kernel}{choice of kernel; must be one of "matern1", "matern2", "gaussian"}
 

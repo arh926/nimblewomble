@@ -16,7 +16,7 @@ sprates <- function(coords = NULL,
   dist.2 = sapply(1:nrow(grid), function(y) apply(coords, 1, function(x) sqrt(sum((x - grid[y,])^2))))
   dist.3 = do.call(rbind, sapply(1:nrow(grid), function(y) apply(coords, 1, function(x) (x - grid[y,])), simplify = FALSE))
 
-  z = model[, paste("z", 1:N, sep = "")]
+  z = model[, paste0("z[", 1:N, "]")]
   phi = model[, "phi"]
   sigma2 = model[, "sigma2"]
   nmcmc = length(phi)

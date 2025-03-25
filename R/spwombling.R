@@ -16,7 +16,7 @@ spwombling <- function(coords = NULL,
   tvec = sapply(1:(nrow(curve) - 1), function(x) sqrt(sum((curve[(x + 1),] - curve[x,])^2)))
   umat = as.matrix(t(sapply(1:(nrow(curve) - 1), function(x) (curve[(x + 1),] - curve[x,])))/tvec)
 
-  z = model[, paste("z", 1:N, sep = "")]
+  z = model[, paste0("z[", 1:N, "]")]
   phi = model[, "phi"]
   sigma2 = model[, "sigma2"]
   nmcmc = length(phi)

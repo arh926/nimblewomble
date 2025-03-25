@@ -12,9 +12,11 @@ sp_ggplot(
   legend.key.width = 0.4,
   text.size = 10,
   point.size = 0.7,
+  clr.pt = "black",
   palette = "Spectral",
   extend = TRUE,
-  title = NULL
+  title = NULL,
+  bound.box = NULL
 )
 }
 \arguments{

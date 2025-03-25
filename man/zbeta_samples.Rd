@@ -7,6 +7,7 @@
 zbeta_samples(
   coords = NULL,
   y = NULL,
+  X = NULL,
   model = NULL,
   kernel = c("matern1", "matern2", "gaussian")
 )
@@ -15,6 +16,8 @@ zbeta_samples(
 \item{coords}{coordinates}
 
 \item{y}{response}
+
+\item{X}{covariates (supply as a matrix without intercept)}
 
 \item{model}{matrix of posterior samples of \eqn{\phi}, \eqn{\sigma^2} and \eqn{\tau^2}}
 
