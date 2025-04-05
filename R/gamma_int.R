@@ -5,7 +5,7 @@
 #' @param a shape parameter
 #' @param b scale parameter
 #' @keywords gamma_int
-#' @import nimble
+#' @importFrom nimble nimbleFunction nimSeq
 #' @export
 gamma_int <- nimble::nimbleFunction(
   run = function(x = double(0),

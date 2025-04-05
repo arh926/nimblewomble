@@ -34,11 +34,15 @@ sp_ggplot(
 
 \item{point.size}{size of points to be plotted (defaults to 0.7)}
 
+\item{clr.pt}{color of point to be plotted (defaults to black)}
+
 \item{palette}{(optional) color palette}
 
 \item{extend}{logical parameter indicating whether to extend the interpolation (defaults to TRUE)}
 
 \item{title}{title of the plot (defaults to NULL)}
+
+\item{bound.box}{bounding box for spatial maps (leave as NULL if not known)}
 }
 \description{
 Spatial Plot Function

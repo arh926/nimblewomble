@@ -1,6 +1,6 @@
 Package: nimblewomble
 Type: Package
-Title: Bayesian Wombling using nimble
+Title: Bayesian Wombling using Nimble
 Version: 0.1.0
 Authors@R: c(
     person(
@@ -14,16 +14,19 @@ Authors@R: c(
       role = c("aut")
     )
   )
-Description: Performs Baysian Wombling using nimble. For more details see, Banerjee and Gelfand (2006) <doi.org/10.1198/016214506000000041> and Halder, Banerjee and Dey (2024) <doi.org/10.1080/01621459.2023.2177166>.
+Description: Performs Baysian Wombling using nimble. For more details see, <doi:10.1198/016214506000000041> and <doi:10.1080/01621459.2023.2177166>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    cowplot,
+    nimble,
     ggplot2,
     MBA,
     metR,
-    nimble,
-    patchwork,
-    sf
+    ggspatial,
+    sf,
+    terra,
+    sp,
+    coda,
+    methods
 RoxygenNote: 7.3.2

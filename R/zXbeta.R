@@ -5,7 +5,7 @@
 #' @param X covariates (supply as a matrix without intercept)
 #' @param beta  posterior samples of \eqn{\beta} (supply as a matrix)
 #' @keywords zXbeta
-#' @import nimble
+#' @importFrom nimble nimbleFunction nimMatrix
 #' @export
 zXbeta <- nimble::nimbleFunction(
   run = function(y = double(1),

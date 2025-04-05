@@ -2,14 +2,14 @@
 % Please edit documentation in R/significance.R
 \name{significance}
 \alias{significance}
-\title{Internal Function for significance}
+\title{Internal Function for determining significance}
 \usage{
 significance(data_frame = NULL)
 }
 \arguments{
-\item{data_frame}{matrix consisting of median, lower and upper CI}
+\item{data_frame}{matrix consisting of median, lower and upper Confidence Interval}
 }
 \description{
-Internal Function for significance
+Internal Function for determining significance
 }
-\keyword{sig}
+\keyword{significance}

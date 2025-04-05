@@ -6,7 +6,7 @@
 #' @param sigma2 spatial variance
 #' @param tau2 nugget variance
 #' @keywords materncov2
-#' @import nimble
+#' @importFrom nimble nimbleFunction nimDim nimMatrix
 #' @export
 materncov2 <- nimble::nimbleFunction(
   run = function(dists = double(2),

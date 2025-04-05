@@ -6,7 +6,7 @@
 #' @param s0 starting point on curve \eqn{s_0}
 #' @param phi posterior sample of \eqn{\phi}
 #' @keywords gamma1n2.mcov2
-#' @import nimble
+#' @importFrom nimble nimbleFunction nimDim nimMatrix nimSeq
 #' @export
 gamma1n2.mcov2 <- nimble::nimbleFunction(
   run = function(coords = double(2),

@@ -7,7 +7,7 @@
 #' @param sigma2 posterior samples of \eqn{\sigma^2}
 #' @param tau2 posterior samples of \eqn{\tau^2}
 #' @keywords zbeta_gaussian
-#' @import nimble
+#' @importFrom nimble nimbleFunction nimMatrix inverse rmnorm_chol
 #' @export
 zbeta_gaussian <- nimble::nimbleFunction(
   run = function(y = double(1),

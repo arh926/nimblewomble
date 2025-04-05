@@ -8,7 +8,7 @@
 #' @param phi posterior samples of \eqn{\phi}
 #' @param sigma2 posterior samples of \eqn{\sigma^2}
 #' @keywords curvatures_gaussian
-#' @import nimble
+#' @importFrom nimble nimbleFunction nimDim nimMatrix inverse rmnorm_chol nimCat
 #' @export
 curvatures_gaussian <- nimble::nimbleFunction(
   run = function(dists.1 = double(2),

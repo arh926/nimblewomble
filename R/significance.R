@@ -1,7 +1,7 @@
-#' Internal Function for significance
+#' Internal Function for determining significance
 #'
-#' @param data_frame matrix consisting of median, lower and upper CI
-#' @keywords sig
+#' @param data_frame matrix consisting of median, lower and upper Confidence Interval
+#' @keywords significance
 #' @export
 significance <- function(data_frame = NULL){
   apply(data_frame, 1, function(x){

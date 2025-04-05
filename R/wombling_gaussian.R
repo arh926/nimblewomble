@@ -9,7 +9,7 @@
 #' @param phi posterior samples of \eqn{\phi}
 #' @param sigma2 posterior samples of \eqn{\sigma^2}
 #' @keywords wombling_gaussian
-#' @import nimble
+#' @importFrom nimble nimbleFunction nimDim nimMatrix rmnorm_chol inverse
 #' @export
 wombling_gaussian <- nimble::nimbleFunction(
   run = function(coords = double(2),

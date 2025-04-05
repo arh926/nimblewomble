@@ -9,7 +9,24 @@
 #' @param niter number of iterations
 #' @param nburn burn-in
 #' @keywords gp_fit
-#' @import nimble coda stats
+#' @importFrom nimble nimbleModel compileNimble configureMCMC buildMCMC runMCMC
+#' @importFrom coda as.mcmc
+#' @importFrom stats dist quantile
+#' @examples
+#' \dontrun{
+#' set.seed(1)
+#' # Generated Simulated Data
+#' N = 1e2
+#' tau = 1
+#' coords = matrix(runif(2 * N, -10, 10), ncol = 2)
+#' colnames(coords) = c("x", "y")
+#' y = rnorm(N, mean = 20 * sin(sqrt(coords[, 1]^2  + coords[, 2]^2)), sd = tau)
+#' # Posterior samples for theta
+#' mc_sp = gp_fit(coords = coords, y = y, kernel = "matern2")
+#' mc_sp$estimates
+#' }
+#' @author Aritra Halder <aritra.halder@drexel.edu>, \cr
+#'  Sudipto Banerjee <sudipto@ucla.edu>
 #' @export
 gp_fit <- function(coords = NULL,
                    y = NULL, X = NULL,
@@ -86,14 +103,14 @@ gp_fit <- function(coords = NULL,
 
     }
 
-    model = nimble::nimbleModel(gp_model, constants = constants, data = data, inits = inits)
-    cModel = nimble::compileNimble(model)
+    model = nimbleModel(gp_model, constants = constants, data = data, inits = inits)
+    cModel = compileNimble(model)
 
-    conf = nimble::configureMCMC(model)
-    MCMC = nimble::buildMCMC(conf)
-    cMCMC = nimble::compileNimble(MCMC, project = cModel)
+    conf = configureMCMC(model)
+    MCMC = buildMCMC(conf)
+    cMCMC = compileNimble(MCMC, project = cModel)
 
-    samples = nimble::runMCMC(cMCMC, niter = niter, nburnin = nburn)
+    samples = runMCMC(cMCMC, niter = niter, nburnin = nburn)
     samples = coda::as.mcmc(samples)
 
     estimates = rbind(round(quantile(samples[, "tau2"], probs = c(0.5, 0.025, 0.975)), 3),
@@ -174,15 +191,15 @@ gp_fit <- function(coords = NULL,
 
     }
 
-    model = nimble::nimbleModel(gp_model, constants = constants, data = data, inits = inits)
-    cModel = nimble::compileNimble(model)
+    model = nimbleModel(gp_model, constants = constants, data = data, inits = inits)
+    cModel = compileNimble(model)
 
-    conf = nimble::configureMCMC(model)
-    MCMC = nimble::buildMCMC(conf)
-    cMCMC = nimble::compileNimble(MCMC, project = cModel)
+    conf = configureMCMC(model)
+    MCMC = buildMCMC(conf)
+    cMCMC = compileNimble(MCMC, project = cModel)
 
-    samples = nimble::runMCMC(cMCMC, niter = niter, nburnin = nburn)
-    samples = coda::as.mcmc(samples)
+    samples = runMCMC(cMCMC, niter = niter, nburnin = nburn)
+    samples = as.mcmc(samples)
 
     estimates = rbind(round(quantile(samples[, "tau2"], probs = c(0.5, 0.025, 0.975)), 3),
                       round(quantile(samples[, "sigma2"], probs = c(0.5, 0.025, 0.975)), 3),

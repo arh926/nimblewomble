@@ -29,4 +29,22 @@ gp_fit(
 \description{
 Fits a Gaussian process with the choice of three kernels. Uses `nimble` to generate posterior samples.
 }
+\examples{
+\dontrun{
+set.seed(1)
+# Generated Simulated Data
+N = 1e2
+tau = 1
+coords = matrix(runif(2 * N, -10, 10), ncol = 2)
+colnames(coords) = c("x", "y")
+y = rnorm(N, mean = 20 * sin(sqrt(coords[, 1]^2  + coords[, 2]^2)), sd = tau)
+# Posterior samples for theta
+mc_sp = gp_fit(coords = coords, y = y, kernel = "matern2")
+mc_sp$estimates
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+ Sudipto Banerjee <sudipto@ucla.edu>
+}
 \keyword{gp_fit}

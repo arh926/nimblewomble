@@ -8,7 +8,7 @@
 #' @param phi posterior samples of \eqn{\phi}
 #' @param sigma2 posterior samples of \eqn{\sigma^2}
 #' @keywords gradients_matern1
-#' @import nimble
+#' @importFrom nimble nimbleFunction nimDim nimMatrix rmnorm_chol inverse
 #' @export
 gradients_matern1 <- nimble::nimbleFunction(
   run = function(dists.1 = double(2),

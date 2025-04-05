@@ -3,7 +3,7 @@
 #' internal use only
 #' @param x standard Gaussian quantile
 #' @keywords pnorm_nimble
-#' @import nimble
+#' @importFrom nimble nimbleFunction nimSeq
 #' @export
 pnorm_nimble <- nimble::nimbleFunction(
   run = function(x = double(0)){

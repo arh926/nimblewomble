@@ -9,7 +9,8 @@
 #' @param phi posterior samples of \eqn{\phi}
 #' @param sigma2 posterior samples of \eqn{\sigma^2}
 #' @keywords wombling_matern1
-#' @import nimble
+#' @importFrom nimble nimbleFunction nimDim nimMatrix inprod inverse
+#' @importFrom stats rnorm
 #' @export
 wombling_matern1 <- nimble::nimbleFunction(
   run = function(coords = double(2),

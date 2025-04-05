@@ -7,11 +7,20 @@
 #' @param legend.key.width width of legend (defaults to .4)
 #' @param text.size size of legend text (defaults to 10)
 #' @param point.size size of points to be plotted (defaults to 0.7)
+#' @param clr.pt color of point to be plotted (defaults to black)
+#' @param bound.box bounding box for spatial maps (leave as NULL if not known)
 #' @param extend logical parameter indicating whether to extend the interpolation (defaults to TRUE)
 #' @param title title of the plot (defaults to NULL)
 #' @param palette (optional) color palette
 #' @keywords sp_plot
-#' @import ggplot2 ggspatial terra MBA metR sf
+#' @importFrom methods as
+#' @importFrom sf st_coordinates st_transform st_as_sf
+#' @importFrom sp proj4string proj4string<- over as.image.SpatialGridDataFrame
+#' @importFrom MBA mba.surf
+#' @importFrom terra project rast
+#' @importFrom ggplot2 ggplot theme_bw aes after_stat labs scale_fill_distiller aes_string geom_sf geom_point theme element_line element_text unit element_rect geom_raster ggtitle xlim ylim
+#' @importFrom metR geom_contour2
+#' @importFrom ggspatial layer_spatial
 #' @export
 sp_ggplot <- function(data_frame = NULL,
                       sp = FALSE,
@@ -23,11 +32,12 @@ sp_ggplot <- function(data_frame = NULL,
                       clr.pt = "black",
                       palette = "Spectral",
                       extend = TRUE,
-                      title = NULL, bound.box = NULL){
+                      title = NULL,
+                      bound.box = NULL){
 
   if(sp & is.null(shape)) stop("Please provide a shape file!")
   if(ncol(data_frame) == 4){
-    col.pt = sapply(data_frame[,4], function(x){
+    col.pt = sapply(data_frame[, 4], function(x){
       if(x == 0) return(NA)
       else if(x == 1) return("green")
       else return("cyan")
@@ -42,15 +52,15 @@ sp_ggplot <- function(data_frame = NULL,
   cnames = colnames(data_frame)[1:3]
   coords = data.frame(data_frame[, c(1, 2)])
 
-  surf = MBA::mba.surf(data_frame[,1:3],
-                  no.X = 200,
-                  no.Y = 200,
+  surf = mba.surf(data_frame[,1:3],
+                  no.X = 300,
+                  no.Y = 300,
                   h = 5,
                   m = 2,
                   extend = extend, sp = sp)$xyz.est
 
   if(sp){
-    box_proj = st_coordinates(st_transform(st_as_sf(data.frame(t(bound.box)), coords = c("x","y"), crs = 4326), crs = 5070))
+    if(!is.null(bound.box)) box_proj = st_coordinates(st_transform(st_as_sf(data.frame(t(bound.box)), coords = c("x","y"), crs = 4326), crs = 5070))
 
     coords_proj = st_coordinates(st_transform(st_as_sf(coords, coords = cnames[1:2], crs = 4326), crs = 5070))
     colnames(coords_proj) = cnames[1:2]
@@ -65,10 +75,10 @@ sp_ggplot <- function(data_frame = NULL,
     colnames(df_surf.rast) = cnames
 
     gplot = ggplot() + theme_bw() +
-      layer_spatial(data = surf.rast, mapping = aes(fill = after_stat(band1))) +
+      layer_spatial(data = surf.rast, mapping = aes(fill = "after_stat(band1)")) +
       labs(x = cnames[1], y = cnames[2], fill = "") +
       scale_fill_distiller(palette = palette,
-                           label = function(x) sprintf("%.2f", x), na.value = NA, direction = 1) +
+                           label = function(x) sprintf("%.2f", x), na.value = NA, direction = -1) +
       geom_contour2(data = df_surf.rast,
                     mapping = aes_string(x = cnames[1], y = cnames[2], z = cnames[3], label = "round(after_stat(level), 2)"),
                     linewidth = 0.1,
@@ -95,7 +105,7 @@ sp_ggplot <- function(data_frame = NULL,
       geom_raster(data = df.gg, mapping = aes_string(x = cnames[1], y = cnames[2], fill = cnames[3])) +
       labs(x = cnames[1], y = cnames[2], fill = "") +
       scale_fill_distiller(palette = palette,
-                           label = function(x) sprintf("%.2f", x), na.value = NA, direction = 1) +
+                           label = function(x) sprintf("%.2f", x), na.value = NA, direction = -1) +
       geom_contour2(data = df.gg,
                     mapping = aes_string(x = cnames[1], y = cnames[2], z = cnames[3], label = "round(after_stat(level), 2)"),
                     linewidth = 0.1,
