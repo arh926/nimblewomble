@@ -1,4 +1,8 @@
-#' Internal function for computing cross-covariance of wombling measures for Matern \eqn{\nu=3/2}
+#' Cross-covariance terms for the posterior distribution of wombling measures
+#' for Matern \eqn{\nu=3/2}.
+#'
+#' For internal use only. Performs one-dimensional quadrature using integral as
+#' a limit of a sum.
 #'
 #' @param coords coordinates
 #' @param t value of t
@@ -7,6 +11,17 @@
 #' @param phi posterior sample of \eqn{\phi}
 #' @keywords gamma1.mcov1
 #' @importFrom nimble nimbleFunction nimDim nimMatrix nimSeq
+#' @examples
+#' \dontrun{
+#' #####################
+#' # Internal use only #
+#' #####################
+#' # Example usage inside nimblewomble::wombling_matern1(...)
+#' gamma1.mcov1(coords = coords[1:ncoords, 1:2], t = tvec[j],
+#'              u = umat[j, 1:2], s0 = curve[j, 1:2], phi = phi[i])
+#' }
+#' @author Aritra Halder <aritra.halder@drexel.edu>, \cr
+#' Sudipto Banerjee <sudipto@ucla.edu>
 #' @export
 gamma1.mcov1 <- nimble::nimbleFunction(
   run = function(coords = double(2),
@@ -20,7 +35,7 @@ gamma1.mcov1 <- nimble::nimbleFunction(
 
     result <- matrix(nrow = n, ncol = 2, init = FALSE)
 
-    # 100 points for sum
+    # 100 points in the partition for the sum
     rule <- seq(0, 1, by = 0.01)
     u.perp <- matrix(nrow = 2, ncol = 1, init = FALSE)
     delta <- matrix(nrow = 100, ncol = 2, init = FALSE)

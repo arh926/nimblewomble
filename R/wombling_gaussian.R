@@ -1,4 +1,6 @@
-#' Posterior samples for wombling measures from squared exponential
+#' Posterior samples for wombling measures for the squared exponential kernel
+#'
+#' For internal use only.
 #'
 #' @param coords coordinates
 #' @param curve curve coordinates
@@ -10,6 +12,24 @@
 #' @param sigma2 posterior samples of \eqn{\sigma^2}
 #' @keywords wombling_gaussian
 #' @importFrom nimble nimbleFunction nimDim nimMatrix rmnorm_chol inverse
+#' @examples
+#' \dontrun{
+#' #####################
+#' # Internal use only #
+#' #####################
+#' # Example usage inside of nimblewomble::spwombling(...)
+#' WG = compileNimble(wombling_gaussian)
+#' wmeasure = WG(coords = coords,
+#'               curve = curve,
+#'               dists = distM,
+#'               tvec = tvec,
+#'               umat = umat,
+#'               z = z,
+#'               phi = phi,
+#'               sigma2 = sigma2)
+#' }
+#' @author Aritra Halder <aritra.halder@drexel.edu>, \cr
+#' Sudipto Banerjee <sudipto@ucla.edu>
 #' @export
 wombling_gaussian <- nimble::nimbleFunction(
   run = function(coords = double(2),

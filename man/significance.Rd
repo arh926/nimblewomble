@@ -2,7 +2,7 @@
 % Please edit documentation in R/significance.R
 \name{significance}
 \alias{significance}
-\title{Internal Function for determining significance}
+\title{Determines significance for posterior estimates}
 \usage{
 significance(data_frame = NULL)
 }
@@ -10,6 +10,19 @@ significance(data_frame = NULL)
 \item{data_frame}{matrix consisting of median, lower and upper Confidence Interval}
 }
 \description{
-Internal Function for determining significance
+For internal use only.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Example usage inside of nimblewomble::spwombling(...)
+estimate.wm$sig = significance(estimate.wm)
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{significance}

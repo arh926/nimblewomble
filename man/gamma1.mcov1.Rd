@@ -2,7 +2,8 @@
 % Please edit documentation in R/gamma1_mcov1.R
 \name{gamma1.mcov1}
 \alias{gamma1.mcov1}
-\title{Internal function for computing cross-covariance of wombling measures for Matern \eqn{\nu=3/2}}
+\title{Cross-covariance terms for the posterior distribution of wombling measures
+for Matern \eqn{\nu=3/2}.}
 \usage{
 gamma1.mcov1(coords, t, u, s0, phi)
 }
@@ -18,6 +19,21 @@ gamma1.mcov1(coords, t, u, s0, phi)
 \item{phi}{posterior sample of \eqn{\phi}}
 }
 \description{
-Internal function for computing cross-covariance of wombling measures for Matern \eqn{\nu=3/2}
+For internal use only. Performs one-dimensional quadrature using integral as
+a limit of a sum.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Example usage inside nimblewomble::wombling_matern1(...)
+gamma1.mcov1(coords = coords[1:ncoords, 1:2], t = tvec[j],
+             u = umat[j, 1:2], s0 = curve[j, 1:2], phi = phi[i])
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{gamma1.mcov1}

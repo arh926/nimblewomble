@@ -2,7 +2,9 @@
 % Please edit documentation in R/curvatures_gaussian.R
 \name{curvatures_gaussian}
 \alias{curvatures_gaussian}
-\title{Posterior samples of rates of change for Matern with \eqn{\nu=5/2}}
+\title{Posterior samples of rates of change (gradients and curvatures) for the
+ Matern kernel with \eqn{\nu\to\infty} producing the squared exponential
+  kernel.}
 \usage{
 curvatures_gaussian(dists.1, dists.2, dists.3, z, phi, sigma2)
 }
@@ -21,5 +23,24 @@ curvatures_gaussian(dists.1, dists.2, dists.3, z, phi, sigma2)
 }
 \description{
 For internal use only.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Example usage inside of nimblewomble::sprates()
+ CG = compileNimble(curvatures_gaussian)
+ sprates = CG(dists.1 = distM,
+              dists.2 = dist.2,
+              dists.3 = dist.3,
+              z = z,
+              phi = phi,
+              sigma2 = sigma2)
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{curvatures_gaussian}

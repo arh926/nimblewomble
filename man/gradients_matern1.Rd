@@ -2,7 +2,8 @@
 % Please edit documentation in R/gradients_matern1.R
 \name{gradients_matern1}
 \alias{gradients_matern1}
-\title{Posterior samples of rates of change for Matern with \eqn{\nu=3/2}}
+\title{Posterior samples of rates of change (gradients) for the
+ Matern kernel with \eqn{\nu=3/2}}
 \usage{
 gradients_matern1(dists.1, dists.2, dists.3, z, phi, sigma2)
 }
@@ -21,5 +22,24 @@ gradients_matern1(dists.1, dists.2, dists.3, z, phi, sigma2)
 }
 \description{
 For internal use only.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Example usage inside of nimblewomble::sprates()
+ GM1 = compileNimble(gradients_matern1)
+ sprates = GM!(dists.1 = distM,
+              dists.2 = dist.2,
+              dists.3 = dist.3,
+              z = z,
+              phi = phi,
+              sigma2 = sigma2)
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{gradients_matern1}

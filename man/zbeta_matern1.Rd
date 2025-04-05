@@ -2,7 +2,8 @@
 % Please edit documentation in R/zbeta_matern1.R
 \name{zbeta_matern1}
 \alias{zbeta_matern1}
-\title{Posterior samples of spatial effects and intercept for Matern with \eqn{nu=3/2}}
+\title{Posterior samples of spatial effects and intercept for the Matern kernel
+with \eqn{nu=3/2}}
 \usage{
 zbeta_matern1(y, dists, phi, sigma2, tau2)
 }
@@ -19,5 +20,20 @@ zbeta_matern1(y, dists, phi, sigma2, tau2)
 }
 \description{
 For internal use only.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Example usage inside of nimblewomble::zbeta_samples(...)
+zbM1 = compileNimble(zbeta_matern1)
+zb.samples = zbM1(y = y, dists = dists, phi = phi, sigma2 = sigma2,
+                 tau2 = tau2)
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{zbeta_matern1}

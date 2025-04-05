@@ -2,7 +2,8 @@
 % Please edit documentation in R/zXbeta.R
 \name{zXbeta}
 \alias{zXbeta}
-\title{Posterior samples of spatial effects and intercept for Matern with \eqn{nu=3/2}}
+\title{Posterior samples of spatial effects and intercept for all kernels in the
+presence of covariates}
 \usage{
 zXbeta(y, X, beta)
 }
@@ -15,5 +16,19 @@ zXbeta(y, X, beta)
 }
 \description{
 For internal use only.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Example usage inside of nimblewomble::zbeta_samples(...)
+zXb = nimble::compileNimble(zXbeta)
+zb.samples = zXb(y = y, X = X, beta = beta)
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{zXbeta}

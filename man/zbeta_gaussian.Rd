@@ -2,7 +2,8 @@
 % Please edit documentation in R/zbeta_gaussian.R
 \name{zbeta_gaussian}
 \alias{zbeta_gaussian}
-\title{Posterior samples of spatial effects and intercept for the squared exponential kernel}
+\title{Posterior samples of spatial effects and intercept for the squared
+exponential kernel}
 \usage{
 zbeta_gaussian(y, dists, phi, sigma2, tau2)
 }
@@ -19,5 +20,20 @@ zbeta_gaussian(y, dists, phi, sigma2, tau2)
 }
 \description{
 For internal use only.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Example usage inside of nimblewomble::zbeta_samples(...)
+zbG = compileNimble(zbeta_gaussian)
+zb.samples = zbG(y = y, dists = dists, phi = phi, sigma2 = sigma2,
+                 tau2 = tau2)
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{zbeta_gaussian}

@@ -1,6 +1,9 @@
-#' Posterior samples of rates of change for Matern with \eqn{\nu=5/2}
+#' Posterior samples of rates of change (gradients and curvatures) for the
+#'  Matern kernel with \eqn{\nu\to\infty} producing the squared exponential
+#'   kernel.
 #'
 #' For internal use only.
+#'
 #' @param dists.1 distance matrix generated from coordinates
 #' @param dists.2 distance of grid from coordinates
 #' @param dists.3 delta = coordinate - grid
@@ -8,7 +11,23 @@
 #' @param phi posterior samples of \eqn{\phi}
 #' @param sigma2 posterior samples of \eqn{\sigma^2}
 #' @keywords curvatures_gaussian
-#' @importFrom nimble nimbleFunction nimDim nimMatrix inverse rmnorm_chol nimCat
+#' @importFrom nimble nimDim nimMatrix inverse rmnorm_chol nimCat
+#' @examples
+#' \dontrun{
+#' #####################
+#' # Internal use only #
+#' #####################
+#' # Example usage inside of nimblewomble::sprates()
+#'  CG = compileNimble(curvatures_gaussian)
+#'  sprates = CG(dists.1 = distM,
+#'               dists.2 = dist.2,
+#'               dists.3 = dist.3,
+#'               z = z,
+#'               phi = phi,
+#'               sigma2 = sigma2)
+#' }
+#' @author Aritra Halder <aritra.halder@drexel.edu>, \cr
+#' Sudipto Banerjee <sudipto@ucla.edu>
 #' @export
 curvatures_gaussian <- nimble::nimbleFunction(
   run = function(dists.1 = double(2),

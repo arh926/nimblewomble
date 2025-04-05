@@ -2,7 +2,8 @@
 % Please edit documentation in R/curvatures_matern2.R
 \name{curvatures_matern2}
 \alias{curvatures_matern2}
-\title{Posterior samples of rates of change for Matern with \eqn{\nu=5/2}}
+\title{Posterior samples of rates of change (gradients and curvatures) for the
+ Matern kernel with \eqn{\nu=5/2}}
 \usage{
 curvatures_matern2(dists.1, dists.2, dists.3, z, phi, sigma2)
 }
@@ -21,5 +22,24 @@ curvatures_matern2(dists.1, dists.2, dists.3, z, phi, sigma2)
 }
 \description{
 For internal use only.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Example usage inside of nimblewomble::sprates()
+ CM2 = compileNimble(curvatures_matern2)
+ sprates = CM2(dists.1 = distM,
+              dists.2 = dist.2,
+              dists.3 = dist.3,
+              z = z,
+              phi = phi,
+              sigma2 = sigma2)
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{curvatures_matern2}

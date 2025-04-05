@@ -1,4 +1,7 @@
-#' Posterior samples for wombling measures from Matern with \eqn{\nu=5/2}
+#' Posterior samples for wombling measures from the Matern kernel
+#'  with \eqn{\nu=5/2}
+#'
+#' For internal use only.
 #'
 #' @param coords coordinates
 #' @param curve curve coordinates
@@ -10,6 +13,24 @@
 #' @param sigma2 posterior samples of \eqn{\sigma^2}
 #' @keywords wombling_matern2
 #' @importFrom nimble nimbleFunction nimDim nimMatrix rmnorm_chol inverse
+#' @examples
+#' \dontrun{
+#' #####################
+#' # Internal use only #
+#' #####################
+#' # Example usage inside of nimblewomble::spwombling(...)
+#' WM2 = compileNimble(wombling_matern2)
+#' wmeasure = WM2(coords = coords,
+#'               curve = curve,
+#'               dists = distM,
+#'               tvec = tvec,
+#'               umat = umat,
+#'               z = z,
+#'               phi = phi,
+#'               sigma2 = sigma2)
+#' }
+#' @author Aritra Halder <aritra.halder@drexel.edu>, \cr
+#' Sudipto Banerjee <sudipto@ucla.edu>
 #' @export
 wombling_matern2 <- nimble::nimbleFunction(
   run = function(coords = double(2),

@@ -1,6 +1,8 @@
-#' Posterior samples of rates of change for Matern with \eqn{\nu=3/2}
+#' Posterior samples of rates of change (gradients) for the
+#'  Matern kernel with \eqn{\nu=3/2}
 #'
 #' For internal use only.
+#'
 #' @param dists.1 distance matrix generated from coordinates
 #' @param dists.2 distance of grid from coordinates
 #' @param dists.3 delta = coordinate - grid
@@ -9,6 +11,22 @@
 #' @param sigma2 posterior samples of \eqn{\sigma^2}
 #' @keywords gradients_matern1
 #' @importFrom nimble nimbleFunction nimDim nimMatrix rmnorm_chol inverse
+#' @examples
+#' \dontrun{
+#' #####################
+#' # Internal use only #
+#' #####################
+#' # Example usage inside of nimblewomble::sprates()
+#'  GM1 = compileNimble(gradients_matern1)
+#'  sprates = GM!(dists.1 = distM,
+#'               dists.2 = dist.2,
+#'               dists.3 = dist.3,
+#'               z = z,
+#'               phi = phi,
+#'               sigma2 = sigma2)
+#' }
+#' @author Aritra Halder <aritra.halder@drexel.edu>, \cr
+#' Sudipto Banerjee <sudipto@ucla.edu>
 #' @export
 gradients_matern1 <- nimble::nimbleFunction(
   run = function(dists.1 = double(2),

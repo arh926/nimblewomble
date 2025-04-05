@@ -1,12 +1,25 @@
-#' Squared Exponential Covariance with \eqn{\nu = \infty}
+#' Squared Exponential Covariance kernel
 #'
-#' Computes the Matern covariance matrix with fractal parameter \eqn{\nu = \infty}.
+#' Computes the Matern covariance matrix with fractal parameter
+#' \eqn{\nu \to \infty}. Has the option to compute \eqn{\Sigma_{d\times d} + \tau^2 I_d}.
+#'
 #' @param dists distance matrix
 #' @param phi spatial range
 #' @param sigma2 spatial variance
 #' @param tau2 nugget variance
 #' @keywords materncov2
 #' @importFrom nimble nimbleFunction nimDim nimMatrix
+#' @examples
+#' \dontrun{
+#' #####################
+#' # Internal use only #
+#' #####################
+#' # Used across multiple functions
+#' # Example usage
+#' gaussian(dists = dists[1:ncoords, 1:ncoords], phi = phi[i], sigma2 = 1, tau2 = 0)
+#' }
+#' @author Aritra Halder <aritra.halder@drexel.edu>, \cr
+#' Sudipto Banerjee <sudipto@ucla.edu>
 #' @export
 gaussian <- nimble::nimbleFunction(
   run = function(dists = double(2),

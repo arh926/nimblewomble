@@ -1,6 +1,8 @@
-#' Posterior samples of spatial effects and intercept for Matern with \eqn{nu=3/2}
+#' Posterior samples of spatial effects and intercept for the Matern kernel
+#' with \eqn{nu=3/2}
 #'
 #' For internal use only.
+#'
 #' @param y response
 #' @param dists distance matrix derived from coordinates
 #' @param phi posterior samples of \eqn{\phi}
@@ -8,6 +10,18 @@
 #' @param tau2 posterior samples of \eqn{\tau^2}
 #' @keywords zbeta_matern1
 #' @importFrom nimble nimbleFunction nimMatrix inverse rmnorm_chol
+#' @examples
+#' \dontrun{
+#' #####################
+#' # Internal use only #
+#' #####################
+#' # Example usage inside of nimblewomble::zbeta_samples(...)
+#' zbM1 = compileNimble(zbeta_matern1)
+#' zb.samples = zbM1(y = y, dists = dists, phi = phi, sigma2 = sigma2,
+#'                  tau2 = tau2)
+#' }
+#' @author Aritra Halder <aritra.halder@drexel.edu>, \cr
+#' Sudipto Banerjee <sudipto@ucla.edu>
 #' @export
 zbeta_matern1 <- nimble::nimbleFunction(
   run = function(y = double(1),

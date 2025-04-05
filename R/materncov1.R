@@ -1,12 +1,25 @@
-#' Matern Covariance with \eqn{\nu = 3/2}
+#' Matern Covariance kernel with \eqn{\nu = 3/2}
 #'
 #' Computes the Matern covariance matrix with fractal parameter \eqn{\nu = 3/2}.
+#' Has the option to compute \eqn{\Sigma_{d\times d} + \tau^2 I_d}.
+#'
 #' @param dists distance matrix
 #' @param phi spatial range
 #' @param sigma2 spatial variance
 #' @param tau2 nugget variance
 #' @keywords materncov1
 #' @importFrom nimble nimbleFunction nimDim nimMatrix
+#' @examples
+#' \dontrun{
+#' #####################
+#' # Internal use only #
+#' #####################
+#' # Used across multiple functions
+#' # Example usage
+#' materncov1(dists = dists[1:ncoords, 1:ncoords], phi = phi[i], sigma2 = 1, tau2 = 0)
+#' }
+#' @author Aritra Halder <aritra.halder@drexel.edu>, \cr
+#' Sudipto Banerjee <sudipto@ucla.edu>
 #' @export
 materncov1 <- nimble::nimbleFunction(
   run = function(dists = double(2),

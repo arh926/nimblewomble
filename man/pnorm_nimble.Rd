@@ -2,7 +2,8 @@
 % Please edit documentation in R/pnorm_nimble.R
 \name{pnorm_nimble}
 \alias{pnorm_nimble}
-\title{Gaussian CDF}
+\title{Computes the Cumulative Distribution Function for the standard Gaussian
+probability distribution}
 \usage{
 pnorm_nimble(x)
 }
@@ -10,6 +11,19 @@ pnorm_nimble(x)
 \item{x}{standard Gaussian quantile}
 }
 \description{
-internal use only
+For internal use only.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Example usage inside of nimblewomble::wombling_gaussian()
+pnorm_nimble(sqrt(2) * phi[i] * tvec[j]) - 1)
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{pnorm_nimble}

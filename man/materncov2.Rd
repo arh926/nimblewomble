@@ -2,7 +2,7 @@
 % Please edit documentation in R/materncov2.R
 \name{materncov2}
 \alias{materncov2}
-\title{Matern Covariance with \eqn{\nu = 5/2}}
+\title{Matern Covariance kernel with \eqn{\nu = 5/2}}
 \usage{
 materncov2(dists, phi, sigma2, tau2)
 }
@@ -17,5 +17,20 @@ materncov2(dists, phi, sigma2, tau2)
 }
 \description{
 Computes the Matern covariance matrix with fractal parameter \eqn{\nu = 5/2}.
+Has the option to compute \eqn{\Sigma_{d\times d} + \tau^2 I_d}.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Used across multiple functions
+# Example usage
+materncov2(dists = dists[1:ncoords, 1:ncoords], phi = phi[i], sigma2 = 1, tau2 = 0)
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{materncov2}

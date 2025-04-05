@@ -2,7 +2,7 @@
 % Please edit documentation in R/wombling_gaussian.R
 \name{wombling_gaussian}
 \alias{wombling_gaussian}
-\title{Posterior samples for wombling measures from squared exponential}
+\title{Posterior samples for wombling measures for the squared exponential kernel}
 \usage{
 wombling_gaussian(coords, curve, dists, tvec, umat, z, phi, sigma2)
 }
@@ -24,6 +24,27 @@ wombling_gaussian(coords, curve, dists, tvec, umat, z, phi, sigma2)
 \item{sigma2}{posterior samples of \eqn{\sigma^2}}
 }
 \description{
-Posterior samples for wombling measures from squared exponential
+For internal use only.
+}
+\examples{
+\dontrun{
+#####################
+# Internal use only #
+#####################
+# Example usage inside of nimblewomble::spwombling(...)
+WG = compileNimble(wombling_gaussian)
+wmeasure = WG(coords = coords,
+              curve = curve,
+              dists = distM,
+              tvec = tvec,
+              umat = umat,
+              z = z,
+              phi = phi,
+              sigma2 = sigma2)
+}
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
 }
 \keyword{wombling_gaussian}
