@@ -22,6 +22,8 @@
 #' @importFrom metR geom_contour2
 #' @importFrom ggspatial layer_spatial
 #' @examples
+#' require(nimblewomble)
+#'
 #' set.seed(1)
 #' # Generated Simulated Data
 #' N = 1e2

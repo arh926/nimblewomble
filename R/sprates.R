@@ -10,6 +10,8 @@
 #' @importFrom stats quantile
 #' @examples
 #' \dontrun{
+#' require(nimble)
+#' require(nimblewomble)
 #' require(patchwork)
 #'
 #' set.seed(1)
