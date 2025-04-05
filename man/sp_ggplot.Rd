@@ -48,6 +48,8 @@ sp_ggplot(
 Spatial Plot Function
 }
 \examples{
+require(nimblewomble)
+
 set.seed(1)
 # Generated Simulated Data
 N = 1e2

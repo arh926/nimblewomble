@@ -25,6 +25,8 @@ Posterior samples for rates of change
 }
 \examples{
 \dontrun{
+require(nimble)
+require(nimblewomble)
 require(patchwork)
 
 set.seed(1)

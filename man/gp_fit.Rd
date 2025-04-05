@@ -31,6 +31,9 @@ Fits a Gaussian process with the choice of three kernels. Uses `nimble` to gener
 }
 \examples{
 \dontrun{
+require(nimble)
+require(nimblewomble)
+
 set.seed(1)
 # Generated Simulated Data
 N = 1e2

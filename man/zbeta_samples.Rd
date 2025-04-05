@@ -28,6 +28,9 @@ For internal use only.
 }
 \examples{
 \dontrun{
+require(nimble)
+require(nimblewomble)
+
 set.seed(1)
 # Generated Simulated Data
 N = 1e2
