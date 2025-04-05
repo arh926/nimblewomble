@@ -14,7 +14,7 @@ Authors@R: c(
       role = c("aut")
     )
   )
-Description: Performs Baysian Wombling using nimble. For more details see, <doi:10.1198/016214506000000041> and <doi:10.1080/01621459.2023.2177166>.
+Description: Performs Bayesian Wombling using Nimble. For more details see, <doi:10.1198/016214506000000041> and <doi:10.1080/01621459.2023.2177166>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

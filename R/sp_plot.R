@@ -21,6 +21,18 @@
 #' @importFrom ggplot2 ggplot theme_bw aes after_stat labs scale_fill_distiller aes_string geom_sf geom_point theme element_line element_text unit element_rect geom_raster ggtitle xlim ylim
 #' @importFrom metR geom_contour2
 #' @importFrom ggspatial layer_spatial
+#' @examples
+#' set.seed(1)
+#' # Generated Simulated Data
+#' N = 1e2
+#' tau = 1
+#' coords = matrix(runif(2 * N, -10, 10), ncol = 2)
+#' colnames(coords) = c("x", "y")
+#' y = rnorm(N, mean = 20 * sin(sqrt(coords[, 1]^2  + coords[, 2]^2)), sd = tau)
+#'
+#' sp_ggplot(data_frame = data.frame(coords, z = y))
+#' @author Aritra Halder <aritra.halder@drexel.edu>, \cr
+#' Sudipto Banerjee <sudipto@ucla.edu>
 #' @export
 sp_ggplot <- function(data_frame = NULL,
                       sp = FALSE,

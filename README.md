@@ -87,3 +87,11 @@ p2 + geom_path(curve, mapping = aes(x, y), linewidth = 2) +
 ```
 ![Rplot01](https://github.com/user-attachments/assets/13153dcb-7263-4dfa-9371-7da0bd1ed587)
 
+
+## Authors
+| Name   | Email           |            |
+|:------ |:--------------- | :--------- |
+| Aritra Halder (maintainer)| aritra.halder@drexel.edu | Asst. Professor, Dept. of Biostatistics, Drexel Univ.|
+| Sudipto Banerjee | sudipto@ucla.edu | Professor & Past Chair, Dept. of Biostatistics, UCLA |
+<!--- --->
+

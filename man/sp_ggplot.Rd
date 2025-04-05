@@ -47,4 +47,19 @@ sp_ggplot(
 \description{
 Spatial Plot Function
 }
+\examples{
+set.seed(1)
+# Generated Simulated Data
+N = 1e2
+tau = 1
+coords = matrix(runif(2 * N, -10, 10), ncol = 2)
+colnames(coords) = c("x", "y")
+y = rnorm(N, mean = 20 * sin(sqrt(coords[, 1]^2  + coords[, 2]^2)), sd = tau)
+
+sp_ggplot(data_frame = data.frame(coords, z = y))
+}
+\author{
+Aritra Halder <aritra.halder@drexel.edu>, \cr
+Sudipto Banerjee <sudipto@ucla.edu>
+}
 \keyword{sp_plot}
