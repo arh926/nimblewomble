@@ -44,18 +44,21 @@ sp_ggplot(
 
 \item{bound.box}{bounding box for spatial maps (leave as NULL if not known)}
 }
+\value{
+A ggplot object.
+}
 \description{
 Spatial Plot Function
 }
 \examples{
-require(nimblewomble)
+library(nimblewomble)
 
 set.seed(1)
 # Generated Simulated Data
 N = 1e2
 tau = 1
 coords = matrix(runif(2 * N, -10, 10), ncol = 2)
-colnames(coords) = c("x", "y")
+colnames(coords) = c('x', 'y')
 y = rnorm(N, mean = 20 * sin(sqrt(coords[, 1]^2  + coords[, 2]^2)), sd = tau)
 
 sp_ggplot(data_frame = data.frame(coords, z = y))

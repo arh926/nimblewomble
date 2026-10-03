@@ -18,28 +18,30 @@ sprates(
 
 \item{model}{posterior samples of \eqn{Z(s)}, \eqn{\phi}, \eqn{\sigma^2}}
 
-\item{kernel}{choice of kernel; must be one of "matern1", "matern2", "gaussian"}
+\item{kernel}{choice of kernel; must be one of 'matern1', 'matern2', 'gaussian'}
+}
+\value{
+A list containing MCMC samples for gradients and curvatures and the associated estimates and 95% confidence intervals
 }
 \description{
 Posterior samples for rates of change
 }
 \examples{
-\dontrun{
-require(nimble)
-require(nimblewomble)
-require(patchwork)
+\donttest{
+library(nimble)
+library(nimblewomble)
 
 set.seed(1)
 # Generated Simulated Data
 N = 1e2
 tau = 1
-coords = matrix(runif(2 * N, -10, 10), ncol = 2); colnames(coords) = c("x", "y")
+coords = matrix(runif(2 * N, -10, 10), ncol = 2); colnames(coords) = c('x', 'y')
 y = rnorm(N, mean = 20 * sin(sqrt(coords[, 1]^2  + coords[, 2]^2)), sd = tau)
 
 # Create equally spaced grid of points
 xsplit = ysplit = seq(-10, 10, by = 1)[-c(1, 21)]
 grid = as.matrix(expand.grid(xsplit, ysplit), ncol = 2)
-colnames(grid) = c("x", "y")
+colnames(grid) = c('x', 'y')
 
 ####################################
 # Process for True Rates of Change #
@@ -81,42 +83,38 @@ p5 = sp_ggplot(data_frame = data.frame(grid[-which(is.nan(true_sxy)),],
 p6 = sp_ggplot(data_frame = data.frame(grid[-which(is.nan(true_syy)),],
                z = true_syy[-which(is.nan(true_syy))]))
 
-((p1 + p2 + p3)/(p4 + p5 + p6))
-
 ##########################
 # Fit a Gaussian Process #
 ##########################
 # Posterior samples for theta
-mc_sp = gp_fit(coords = coords, y = y, kernel = "matern2")
+mc_sp = gp_fit(coords = coords, y = y, kernel = 'matern2')
 # Posterior samples for Z(s) and beta
 model = zbeta_samples(y = y, coords = coords,
                       model = mc_sp$mcmc,
-                      kernel = "matern2")
+                      kernel = 'matern2')
+
 ###################
 # Rates of Change #
 ###################
 gradients = sprates(grid = grid,
                     coords = coords,
                     model = model,
-                    kernel = "matern2")
+                    kernel = 'matern2')
 p8 = sp_ggplot(data_frame = data.frame(grid,
-                z = gradients$estimate.sx[,"50\%"],
+                z = gradients$estimate.sx[,'50\%'],
                sig = gradients$estimate.sx$sig))
 p9 = sp_ggplot(data_frame = data.frame(grid,
-               z = gradients$estimate.sy[,"50\%"],
+               z = gradients$estimate.sy[,'50\%'],
                sig = gradients$estimate.sy$sig))
 p10 = sp_ggplot(data_frame = data.frame(grid,
-                 z = gradients$estimate.sxx[,"50\%"],
+                 z = gradients$estimate.sxx[,'50\%'],
                 sig = gradients$estimate.sxx$sig))
 p11 = sp_ggplot(data_frame = data.frame(grid,
-                 z = gradients$estimate.sxy[,"50\%"],
+                 z = gradients$estimate.sxy[,'50\%'],
                  sig = gradients$estimate.sxy$sig))
 p12 = sp_ggplot(data_frame = data.frame(grid,
-                z = gradients$estimate.syy[,"50\%"],
+                z = gradients$estimate.syy[,'50\%'],
                 sig = gradients$estimate.syy$sig))
-
-# compare with true estimates
-((p7 + p8 + p9)/(p10 + p11 + p12))
 }
 }
 \author{

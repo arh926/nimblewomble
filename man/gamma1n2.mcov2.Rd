@@ -18,6 +18,9 @@ gamma1n2.mcov2(coords, t, u, s0, phi)
 
 \item{phi}{posterior sample of \eqn{\phi}}
 }
+\value{
+A matrix of cross-covariance terms. For internal use only.
+}
 \description{
 For internal use only. Performs one-dimensional quadrature using integral as
 a limit of a sum.

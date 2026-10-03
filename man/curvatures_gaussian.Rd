@@ -21,6 +21,9 @@ curvatures_gaussian(dists.1, dists.2, dists.3, z, phi, sigma2)
 
 \item{sigma2}{posterior samples of \eqn{\sigma^2}}
 }
+\value{
+A matrix of posterior samples for the gradient and curvatures. For internal use only.
+}
 \description{
 For internal use only.
 }

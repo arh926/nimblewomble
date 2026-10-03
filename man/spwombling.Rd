@@ -18,49 +18,55 @@ spwombling(
 
 \item{model}{posterior samples of \eqn{Z(s)}, \eqn{\phi}, \eqn{\sigma^2}}
 
-\item{kernel}{choice of kernel; must be one of "matern1", "matern2", "gaussian"}
+\item{kernel}{choice of kernel; must be one of 'matern1', 'matern2', 'gaussian'}
+}
+\value{
+A list containing posterior samples of wombling measures and associated estimates and their 95% confidence intervals.
 }
 \description{
 Posterior samples for wombling measures
 }
 \examples{
 \dontrun{
-require(nimble)
-require(nimblewomble)
+library(nimble)
+library(nimblewomble)
 
 set.seed(1)
 # Generated Simulated Data
 N = 1e2
 tau = 1
-coords = matrix(runif(2 * N, -10, 10), ncol = 2); colnames(coords) = c("x", "y")
+coords = matrix(runif(2 * N, -10, 10), ncol = 2)
+ colnames(coords) = c('x', 'y')
 y = rnorm(N, mean = 20 * sin(sqrt(coords[, 1]^2  + coords[, 2]^2)), sd = tau)
 
 # Create equally spaced grid of points
 xsplit = ysplit = seq(-10, 10, by = 1)[-c(1, 21)]
 grid = as.matrix(expand.grid(xsplit, ysplit), ncol = 2)
-colnames(grid) = c("x", "y")
+colnames(grid) = c('x', 'y')
 
 ##########################
 # Fit a Gaussian Process #
 ##########################
 # Posterior samples for theta
-mc_sp = gp_fit(coords = coords, y = y, kernel = "matern2")
+mc_sp = gp_fit(coords = coords, y = y, kernel = 'matern2')
 # Posterior samples for Z(s) and beta
 model = zbeta_samples(y = y, coords = coords,
                       model = mc_sp$mcmc,
-                      kernel = "matern2")
+                      kernel = 'matern2')
 ############
 # Wombling #
 ############
 # Pick any curve (contour) of your choice
 # curve = your contour
-tvec = sapply(1:(nrow(curve) - 1), function(x) sqrt(sum((curve[(x + 1),] - curve[x,])^2)))
-umat = as.matrix(t(sapply(1:(nrow(curve) - 1), function(x) (curve[(x + 1),] - curve[x,])))/tvec)
+tvec = sapply(1:(nrow(curve) - 1), function(x){
+sqrt(sum((curve[(x + 1),] - curve[x,])^2))})
+umat = as.matrix(t(sapply(1:(nrow(curve) - 1), function(x){
+ (curve[(x + 1),] - curve[x,])}))/tvec)
 
 wm = spwombling(coords = coords,
                 curve = curve,
                 model = model,
-                kernel = "matern2")
+                kernel = 'matern2')
 
 # Total wombling measure for gradient
 colSums(wm$estimate.wm.1[,-4]); colSums(wm$estimate.wm.1[,-4])/sum(tvec)
@@ -70,14 +76,14 @@ colSums(wm$estimate.wm.2[,-4]); colSums(wm$estimate.wm.2[,-4])/sum(tvec)
 
 # Color code points based on significance
 col.pts.1 = sapply(wm$estimate.wm.1$sig, function(x){
-  if(x == 1) return("green")
-  else if(x == -1) return("cyan")
+  if(x == 1) return('green')
+  else if(x == -1) return('cyan')
   else return(NA)
   })
 
   col.pts.2 = sapply(wm$estimate.wm.2$sig, function(x){
-  if(x == 1) return("green")
-  else if(x == -1) return("cyan")
+  if(x == 1) return('green')
+  else if(x == -1) return('cyan')
   else return(NA)
   })
 
@@ -90,7 +96,6 @@ p16 = p13 + geom_path(curve, mapping = aes(x, y), linewidth = 2) +
             geom_path(curve, mapping = aes(x, y),
             colour = c(col.pts.2, NA), linewidth = 1, na.rm = TRUE)
 
-p14 + (p15/p16)
 
 ###############
 # True Values #

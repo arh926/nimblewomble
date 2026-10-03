@@ -24,6 +24,9 @@ wombling_matern2(coords, curve, dists, tvec, umat, z, phi, sigma2)
 
 \item{sigma2}{posterior samples of \eqn{\sigma^2}}
 }
+\value{
+A matrix of wombling measures. For internal use only.
+}
 \description{
 For internal use only.
 }

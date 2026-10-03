@@ -15,18 +15,33 @@ materncov2(dists, phi, sigma2, tau2)
 
 \item{tau2}{nugget variance}
 }
+\value{
+A matrix of covariance terms. For internal use only.
+}
 \description{
 Computes the Matern covariance matrix with fractal parameter \eqn{\nu = 5/2}.
 Has the option to compute \eqn{\Sigma_{d\times d} + \tau^2 I_d}.
 }
 \examples{
-\dontrun{
+\donttest{
 #####################
 # Internal use only #
 #####################
 # Used across multiple functions
 # Example usage
-materncov2(dists = dists[1:ncoords, 1:ncoords], phi = phi[i], sigma2 = 1, tau2 = 0)
+library(nimble)
+library(nimblewomble)
+
+set.seed(1)
+# Generated Simulated Data
+N = 1e2
+tau = 1
+coords = matrix(runif(2 * N, -10, 10), ncol = 2)
+colnames(coords) = c('x', 'y')
+dists = as.matrix(dist(coords))
+
+cMaterncov1  = compileNimble(materncov1)
+cMaterncov1(dists = dists[1:N, 1:N], phi = 1, sigma2 = 1, tau2 = 0)
 }
 }
 \author{

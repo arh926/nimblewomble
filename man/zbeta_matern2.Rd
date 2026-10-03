@@ -18,6 +18,9 @@ zbeta_matern2(y, dists, phi, sigma2, tau2)
 
 \item{tau2}{posterior samples of \eqn{\tau^2}}
 }
+\value{
+A matrix of spatial effects and intercept. For internal use only.
+}
 \description{
 For internal use only.
 }
