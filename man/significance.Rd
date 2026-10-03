@@ -7,7 +7,10 @@
 significance(data_frame = NULL)
 }
 \arguments{
-\item{data_frame}{matrix consisting of median, lower and upper Confidence Interval}
+\item{data_frame}{data frame consisting of median, lower and upper confidence interval for estimates}
+}
+\value{
+A data frame consisting median, lower and upper confidence interval for estimates and significance (0 or 1). For internal use only.
 }
 \description{
 For internal use only.

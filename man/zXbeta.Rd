@@ -14,6 +14,9 @@ zXbeta(y, X, beta)
 
 \item{beta}{posterior samples of \eqn{\beta} (supply as a matrix)}
 }
+\value{
+A matrix of spatial effects and intercept. For internal use only.
+}
 \description{
 For internal use only.
 }

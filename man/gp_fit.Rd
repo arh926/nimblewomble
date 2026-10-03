@@ -20,29 +20,32 @@ gp_fit(
 
 \item{X}{covariates (supply as a matrix without the intercept)}
 
-\item{kernel}{choice of kernel; must be one of "matern1", "matern2", "gaussian"}
+\item{kernel}{choice of kernel; must be one of 'matern1', 'matern2', 'gaussian'}
 
 \item{niter}{number of iterations}
 
 \item{nburn}{burn-in}
 }
+\value{
+A list of MCMC samples containing the covariance parameters and the parameter estimates with associated 95% credible intervals.
+}
 \description{
 Fits a Gaussian process with the choice of three kernels. Uses `nimble` to generate posterior samples.
 }
 \examples{
-\dontrun{
-require(nimble)
-require(nimblewomble)
+\donttest{
+library(nimble)
+library(nimblewomble)
 
 set.seed(1)
 # Generated Simulated Data
 N = 1e2
 tau = 1
 coords = matrix(runif(2 * N, -10, 10), ncol = 2)
-colnames(coords) = c("x", "y")
+colnames(coords) = c('x', 'y')
 y = rnorm(N, mean = 20 * sin(sqrt(coords[, 1]^2  + coords[, 2]^2)), sd = tau)
 # Posterior samples for theta
-mc_sp = gp_fit(coords = coords, y = y, kernel = "matern2")
+mc_sp = gp_fit(coords = coords, y = y, kernel = 'matern2')
 mc_sp$estimates
 }
 }

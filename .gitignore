@@ -1,4 +1,10 @@
+*.Rproj.user
+cache/
+.RData
+Rplots.pdf
 .Rproj.user
 .Rhistory
-.RData
-.Ruserdata
+*.Rproj
+/.quarto/
+**/*.quarto_ipynb
+README.html

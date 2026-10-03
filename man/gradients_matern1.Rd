@@ -20,6 +20,9 @@ gradients_matern1(dists.1, dists.2, dists.3, z, phi, sigma2)
 
 \item{sigma2}{posterior samples of \eqn{\sigma^2}}
 }
+\value{
+Returns a matrix of gradients. For internal use only.
+}
 \description{
 For internal use only.
 }
@@ -30,7 +33,7 @@ For internal use only.
 #####################
 # Example usage inside of nimblewomble::sprates()
  GM1 = compileNimble(gradients_matern1)
- sprates = GM!(dists.1 = distM,
+ sprates = GM1(dists.1 = distM,
               dists.2 = dist.2,
               dists.3 = dist.3,
               z = z,

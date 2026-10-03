@@ -1,7 +1,7 @@
 Package: nimblewomble
 Type: Package
-Title: Bayesian Wombling using Nimble
-Version: 0.1.0
+Title: Bayesian Wombling using 'nimble'
+Version: 0.1.1
 Authors@R: c(
     person(
       "Aritra", "Halder",
@@ -12,21 +12,26 @@ Authors@R: c(
       "Sudipto", "Banerjee",
       email = "sudipto@ucla.edu",
       role = c("aut")
+    ),
+    person(
+      "Reed", "Benkendorf",
+      email = "reedbenkendorf2021@u.northwestern.edu",
+      role = c("ctb"),
+      comment = "posterior boundary and plotting-layer functions"
     )
   )
-Description: Performs Bayesian Wombling using Nimble. For more details on wombling please see, <doi:10.1198/016214506000000041> and <doi:10.1080/01621459.2023.2177166>.
+Description: A software package to perform Wombling, or boundary analysis, using the 'nimble' Bayesian hierarchical modeling environment. Wombling is used widely to track regions of rapid change within the spatial reference domain. Specific functions in the package implement Gaussian process models for point-referenced spatial data followed by predictive inference on rates of change over curves using line integrals. We demonstrate model based Bayesian inference using posterior distributions featuring simple analytic forms while offering uncertainty quantification over curves. For more details on wombling please see, Banerjee and Gelfand (2006) <doi:10.1198/016214506000000041> and Halder, Banerjee and Dey (2024) <doi:10.1080/01621459.2023.2177166>.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
-Imports: 
-    nimble,
-    ggplot2,
-    MBA,
-    metR,
-    ggspatial,
-    sf,
-    terra,
-    sp,
-    coda,
-    methods
-RoxygenNote: 7.3.2
+Imports: nimble, ggplot2, MBA, metR, ggspatial, sf, terra, sp, coda,
+        matrixStats, methods
+Suggests: patchwork, knitr, rmarkdown, testthat (>= 3.0.0), INLA
+Config/testthat/edition: 3
+NeedsCompilation: no
+Packaged: 2025-04-08 20:02:31 UTC; aritrah-dsph
+Author: Aritra Halder [aut, cre],
+  Sudipto Banerjee [aut]
+Maintainer: Aritra Halder <aritra.halder@drexel.edu>
+Repository: CRAN
+Date/Publication: 2025-04-09 10:00:10 UTC
+Config/roxygen2/version: 8.0.0

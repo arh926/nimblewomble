@@ -13,18 +13,24 @@ gamma_int(x, a, b)
 
 \item{b}{scale parameter}
 }
+\value{
+A scalar value of the integral. For internal use only.
+}
 \description{
 For internal use only. Use integration as a limit of a sum to numerically
  compute the incomplete gamma integral
 }
 \examples{
-\dontrun{
+\donttest{
 #####################
 # Internal use only #
 #####################
 # Example usage in nimblewomble::wombling_matern1(...) or,
 # nimblewomble::wombling_matern2(...)
-gamma_int(x = 1, a = 1, b = 1/sqrt(3))
+library(nimble)
+
+Gint = compileNimble(gamma_int)
+Gint(x = 1, a = 1, b = 1)
 }
 }
 \author{

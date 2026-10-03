@@ -1,3 +1,11 @@
-^.*\.Rproj$
+^cache$
+^Rplots\.pdf$
+^README\.Rmd$
+^README\.with-boundary-viz\.Rmd$
+^README\.with-boundary-viz\.html$
+^README\.with-boundary-viz\.md$
+^\.vdoc.*\.r$
 ^\.Rproj\.user$
-^LICENSE\.md$
+^.*\.Rproj$
+^\.github$
+^\.gitignore$

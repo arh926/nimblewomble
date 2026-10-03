@@ -1,97 +1,736 @@
 
+<!-- README.md is generated from README.Rmd. Please edit that file. -->
+
 # `nimblewomble`: An R package for Bayesian wombling with `nimble`
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
-The goal of `nimblewomble` is to perform Bayesian Wombling (boundary analysis) using `nimble`. 
+The goal of `nimblewomble` is to perform Bayesian Wombling (boundary
+gradient detection) using `nimble`.
 
-For more details on point-referenced Wombling please refer to: 
-a. _Bayesian Wombling_: Sudipto Banerjee and Alan E. Gelfand<https://doi.org/10.1198/016214506000000041> 
-b. _Bayesian Modeling with Curvature Processes_: Aritra Halder, Sudipto Banerjee and Dipak K. Dey <https://doi.org/10.1080/01621459.2023.2177166>
+For more details on point-referenced Wombling please refer to:
+
+1.  *Bayesian Wombling* — Sudipto Banerjee and Alan E. Gelfand,
+    <https://doi.org/10.1198/016214506000000041>
+2.  *Bayesian Modeling with Curvature Processes* — Aritra Halder,
+    Sudipto Banerjee and Dipak K. Dey,
+    <https://doi.org/10.1080/01621459.2023.2177166>
+
+For an in-depth exploration of this package’s statistical basis see the
+[R Journal
+article](https://journal.r-project.org/articles/RJ-2026-026/).
 
 ## Installation
 
-You can install the development version of `nimblewomble` like so:
+You can install the development version of `nimblewomble` from GitHub:
 
 ``` r
-devtools::install_github("arh926/nimblewomble")
+# install.packages("remotes")
+#remotes::install_github("arh926/nimblewomble")
 ```
 
-## Example
-![Rplot02](https://github.com/user-attachments/assets/9143789f-8e12-4373-bb46-5fa8eef622c3)
+## Example on Simulated Data
 
-This is a basic example which shows you the workflow on a simulated data:
+The following walks through the workflow on a simulated data set.
 
 ### Fitting a Gaussian Process
 
 ``` r
-require(nimble)
-require(nimblewomble)
-
 set.seed(1)
 
-N = 1e2
-tau = 1
-coords = matrix(runif(2 * N, -10, 10), ncol = 2); colnames(coords) = c("x", "y")
-y = rnorm(N, 20 * sin(sqrt(coords[, 1]^2  + coords[, 2]^2)), tau)
+N     = 1e2
+tau   = 1
+coords = matrix(runif(2 * N, -10, 10), ncol = 2)
+colnames(coords) = c("x", "y")
+y     = rnorm(N, mean = 20 * sin(sqrt(coords[, 1]^2 + coords[, 2]^2)), sd = tau)
+obs   = data.frame(coords, y)
 
 mc_sp = gp_fit(coords = coords, y = y, kernel = "matern1")
+#> Defining model
+#> Building model
+#> Setting data and initial values
+#> Running calculate on model
+#>   [Note] Any error reports that follow may simply reflect missing values in model variables.
+#> Checking model sizes and dimensions
+#> Compiling
+#>   [Note] This may take a minute.
+#>   [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+#> ===== Monitors =====
+#> thin = 1: phi, sigma2, tau2
+#> ===== Samplers =====
+#> RW sampler (3)
+#>   - sigma2
+#>   - phi
+#>   - tau2
+#> Compiling
+#>   [Note] This may take a minute.
+#>   [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+#> running chain 1...
+#> |-------------|-------------|-------------|-------------|
+#> |-------------------------------------------------------|
 
-zbeta = zbeta_samples(y = y, coords = coords,
-                      model = mc_sp$mcmc,
+zbeta = zbeta_samples(y      = y,
+                      coords = coords,
+                      model  = mc_sp$mcmc,
                       kernel = "matern1")
+#> Compiling
+#>   [Note] This may take a minute.
+#>   [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.
 ```
-### Predicitve Inference for Rates of Change
+
+### Predictive Inference for Rates of Change
+
 ``` r
 xsplit = ysplit = seq(-10, 10, by = 1)[-c(1, 21)]
-grid = as.matrix(expand.grid(xsplit, ysplit), ncol = 2)
+grid   = as.matrix(expand.grid(xsplit, ysplit), ncol = 2)
 colnames(grid) = c("x", "y")
-gradients = sprates(grid = grid,
-                    coords = coords,
-                    model = zbeta,
-                    kernel = "matern1")
-                    require(ggplot2)
-require(ggplot2)
-require(cowplot)
-require(MBA)
-require(metR)
 
-p1 = sp_ggplot(data_frame = data.frame(grid,
-                                       z = gradients$estimate.sx[,"50%"],
-                                       sig = gradients$estimate.sx$sig))
+gradients = sprates(
+  grid   = grid,
+  coords = coords,
+  model  = zbeta,
+  kernel = "matern1"
+  )
+#> Compiling
+#>   [Note] This may take a minute.
+#>   [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+
+# Shared fill scale so patchwork can collect a single legend across p1/p2/p3.
+shared_fill = scale_fill_distiller(
+  palette = "Spectral", direction = -1,
+  limits  = c(-20, 20), oob = scales::squish,
+  labels  = scales::label_number(drop0trailing = TRUE, big.mark = ""), na.value = NA,
+  guide   = guide_colourbar(
+    order     = 1,
+    barwidth  = unit(6, "cm"),
+    barheight = unit(0.4, "cm")
+  )
+)
+
+p1 = sp_ggplot(data_frame =
+  data.frame(
+    grid,
+    z   = gradients$estimate.sx[, "50%"],
+    sig = gradients$estimate.sx$sig)
+    ) +
+    shared_fill +
+    xlim(-10, 10) +
+    ylim(-10, 10)
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
+
 p1
 ```
-![Rplot](https://github.com/user-attachments/assets/7cac91d6-ce28-4106-84d7-cba45031d1b8)
 
+<img src="man/figures/README-sprates-1.png" alt="" width="100%" />
 
-### Wombling Measure: Predicitve inference on Line Integrals
+### Wombling Measure: Predictive Inference on Line Integrals
+
 ``` r
-curve = # Pick a curve from the surface that is interesting to you
-wm = spwombling(coords = coords,
-                curve = curve,
-                model = zbeta,
-                kernel = "matern1")
+# Interpolate the observed surface and wrap it as a SpatRaster.
+surf = MBA::mba.surf(
+  cbind(coords, y),
+  no.X = 400, no.Y = 400,
+  extend = TRUE
+  )$xyz.est
 
-col.pts = sapply(wm$estimate.wm$sig, function(x){
-  if(x == 1) return("green")
-  else if(x == -1) return("cyan")
-  else return(NA)
+surf_df = data.frame(
+  x = rep(surf$x, times = length(surf$y)),
+  y = rep(surf$y, each  = length(surf$x)),
+  z = as.vector(surf$z)
+  )
+r = rast(surf_df, type = "xyz")
+
+# Extract the -15 contour and keep the longest connected segment.
+cv = as.contour(r, levels = -15)
+g  = as.data.frame(geom(cv))
+id = paste(g$geom, g$part, sep = "_")
+picked = g[id == names(which.max(table(id))), c("x", "y")]
+
+# Subsample along the curve. Density here drives ribbon resolution — bumping
+# it up reveals finer CI structure but scales spwombling's cost.
+idx   = round(seq(1, nrow(picked), length.out = 50))
+curve = as.matrix(picked[idx, ])
+
+wm = spwombling(
+  coords = coords,
+  curve  = curve,
+  model  = zbeta,
+  kernel = "matern1"
+  )
+#> Compiling
+#>   [Note] This may take a minute.
+#>   [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.
+
+col.pts = sapply(wm$estimate.wm$sig, function(x) {
+  if (x ==  1) return("green")
+  if (x == -1) return("cyan")
+  NA
 })
 
-p2 = sp_ggplot(obs, legend.key.height = 0.7, legend.key.width = 0.4, text.size = 10)
+p2 = sp_ggplot(
+  obs,
+  legend.key.height = 0.7,
+  legend.key.width  = 0.4,
+  text.size         = 10
+  ) +
+  shared_fill
+#> Scale for fill is already present.
+#> Adding another scale for fill, which will replace the existing scale.
 
-p2 + geom_path(curve, mapping = aes(x, y), linewidth = 2) + 
-  geom_path(curve, mapping = aes(x, y), colour = c(col.pts, NA), linewidth = 1, na.rm = TRUE)
-
+p3 = p2 +
+  geom_path(as.data.frame(curve), mapping = aes(x, y), linewidth = 2) +
+  geom_path(
+    as.data.frame(curve),
+    mapping = aes(x, y),
+    colour = c(col.pts, NA),
+    linewidth = 1,
+    na.rm = TRUE
+    )
 ```
-![Rplot01](https://github.com/user-attachments/assets/13153dcb-7263-4dfa-9371-7da0bd1ed587)
 
+``` r
+# Swap sp_ggplot's fixed 2-decimal legend labels for trailing-zero-free ones.
+sp_ggplot(obs) +
+  scale_fill_distiller(
+    palette = "Spectral", direction = -1, na.value = NA,
+    labels  = scales::label_number(drop0trailing = TRUE, big.mark = "")
+  )
+```
+
+<img src="man/figures/README-obs-surface-1.png" alt="" width="100%" />
+
+``` r
+
+design <- "
+  331
+  332
+"
+
+pane = p3 | (
+  p1 /  p2 + theme(axis.title  = element_blank())) + 
+    plot_layout(
+      axis_titles = 'collect',
+      guides = 'collect'#,
+     # design = design
+    ) 
+
+pane = p3 + p1 + p2  +
+    plot_layout(
+      byrow = FALSE,
+      axis_titles = 'collect',
+      guides = 'collect',
+      design = design
+    ) &
+    theme(legend.position = 'bottom', legend.box = 'vertical')
+
+pane
+```
+
+<img src="man/figures/README-obs-surface-2.png" alt="" width="100%" />
+
+``` r
+rm(N, tau, coords, y, obs, mc_sp, zbeta, xsplit, grid, 
+gradients, shared_fill, p1, surf, surf_df, r, cv, g, id, 
+picked, idx, curve, wm, col.pts, p2, p3, design, pane, p3)
+```
+
+## Application Example
+
+The following walks through the workflow on the classic **Meuse**
+heavy-metal survey (155 topsoil samples along a floodplain of the river
+Meuse in the Netherlands). We model `log(zinc) ~ dist + matern1()`,
+where `dist` is normalized distance to the river — which describes much
+of the distribution, letting the Gaussian process capture the remainder.
+
+We then detect a gradient between areas with typical and elevated zinc
+concentration. Once users determine this boundary, they can perform
+further analysis to design studies to determine causal agents
+restricting the movement of zinc in the soil etc.
+
+### Example set up
+
+``` r
+set.seed(1)
+
+# We model log(zinc) as a Matérn GP with a single normalized-distance-to-river
+# covariate. `dist` carries the near-river signal; the GP absorbs the rest.
+data(meuse); data(meuse.grid)
+coords = as.matrix(meuse[, c("x", "y")])
+y      = log(meuse$zinc)
+X   = cbind(dist = meuse$dist)
+
+# Plotting extents derived once so downstream chunks stay in sync with the data.
+bb  = apply(coords, 2, range)
+pad = 0.05 * apply(bb, 2, diff)
+xr  = bb[, 1] + c(-pad[1], pad[1])
+yr  = bb[, 2] + c(-pad[2], pad[2])
+
+# Shared plot layer bundles.
+p_theme <- list(
+  coord_fixed(xlim = xr, ylim = yr),
+  theme_bw(),
+  theme(
+    panel.background = element_rect(fill = NA, colour = NA),
+    plot.background  = element_rect(fill = NA, colour = NA),
+    axis.title       = element_blank(),
+    axis.text        = element_blank(),
+    axis.ticks       = element_blank(),
+    plot.title = element_text(hjust = 0.5),
+    legend.title = element_text(size = rel(0.75)),
+    legend.text = element_text(size = rel(0.65)),
+    legend.position = 'bottom',
+    legend.box = 'vertical', # stack legends: fill on top, lines below
+    legend.key.size = unit(0.8, "lines")
+  )
+)
+
+obs_points <- function(...) geom_point( ## helper for plotting sampling site
+  data = as.data.frame(coords), aes(x, y),
+  inherit.aes = FALSE, ...
+)
+
+# Legend-label helper: strip trailing zeros on labels
+tidy_num <- scales::label_number(drop0trailing = TRUE, big.mark = "")
+
+# Fill guide helper: order = 1 keeps the colourbar on the top legend row
+fill_guide <- guide_colourbar(order = 1)
+
+ggplot(meuse, aes(x=x, y=y, size=zinc, color = dist)) +
+  geom_point() +
+  scale_size(labels = tidy_num) +
+  scale_colour_continuous(labels = tidy_num) +
+  p_theme +
+  labs(
+    title = "Observed Zinc concentration (Meuse)", 
+    size = 'Zn ppm',
+    color = 'Distance from\nMeuse River (km)'
+    )
+```
+
+<img src="man/figures/README-import data set up plot theme-1.png" alt="" width="100%" />
+
+### Fitting a Gaussian Process
+
+A Gaussian process (GP) is a method for fitting a smooth surface through
+point observations. Rather than a “best fit” surface, we model a
+*family* of plausible surfaces, allowing uncertainty to be contained
+across them. Everything downstream (rates of change, boundaries,
+credible intervals) is a summary of the Gaussian process.
+
+`gp_fit()` runs MCMC on the GP hyperparameters — kernel range, marginal
+variance, nugget and the regression coefficient `dist` from river.
+`zbeta_samples()` then draws posterior samples of the spatial residual
+field $z(s)$ at each observed location and of the intercept — the raw
+material every downstream step consumes.
+
+``` r
+# Kernel choice: "matern1" (Matérn ν = 3/2) fits relatively smooth fields. 
+# Use "matern2" (ν = 5/2) for smoother gradients, and "gaussian" for the smoothest.
+mc_sp = gp_fit(coords = coords, y = y, X = X, kernel = "matern1")
+#> ===== Monitors =====
+#> thin = 1: beta, phi, sigma2, tau2
+#> ===== Samplers =====
+#> RW sampler (4)
+#>   - beta[]  (1 element)
+#>   - sigma2
+#>   - phi
+#>   - tau2
+#> |-------------|-------------|-------------|-------------|
+#> |-------------------------------------------------------|
+
+# Turn the MCMC of hyperparameters into per-draw samples of the residual
+# field z(s) at every observed site + the intercept. `spwombling`,
+# `sprates`, and `posterior_boundaries` all read from `zbeta`.
+zbeta = zbeta_samples(
+  y      = y,
+  coords = coords,
+  X      = X,
+  model  = mc_sp$mcmc,
+  kernel = "matern1"
+  )
+```
+
+### Predictive Inference for Rates of Change
+
+Once we have the smooth surface, we can ask *where does the field change
+fastest*? The gradient $(\partial/\partial x, \partial/\partial y)$ at
+each pixel is the local slope; the map below shows its **magnitude**.
+
+In some instances, this should be a good way to identify the potential
+womble boundary. Here it tends to highlight internal gradients.
+
+``` r
+r_dist = rast(meuse.grid[, c("x", "y", "dist")], type = "xyz")
+
+xsplit = seq(xr[1], xr[2], length.out = 60)
+ysplit = seq(yr[1], yr[2], length.out = 60)
+grid   = as.matrix(expand.grid(xsplit, ysplit), ncol = 2)
+colnames(grid) = c("x", "y")
+
+# `sprates` returns posterior quantiles of the *residual* gradient ∂z/∂x, ∂z/∂y
+# — it does not accept X, so this is the partial gradient holding `dist` fixed.
+# Total ∂ŷ/∂x = ∂z/∂x + β_dist · ∂dist/∂x.
+gradients = sprates(
+  grid   = grid,
+  coords = coords,
+  model  = zbeta,
+  kernel = "matern1"
+  )
+
+# Central-difference gradients on meuse.grid (weights pre-scaled by 1/(2·cell)).
+# `na.rm = FALSE` (default): at polygon-boundary cells the stencil has an NA
+# neighbor, so the sum returns NA. That burns one cell inward and keeps the
+# ring of huge partial-difference "gradients" from swamping the interior
+# signal in |∇ŷ|.
+w_x     = matrix(c(-1, 0, 1), nrow = 1) / (2 * xres(r_dist))
+w_y     = matrix(c(-1, 0, 1), ncol = 1) / (2 * yres(r_dist))
+grad_dx = focal(r_dist, w = w_x, na.policy = "omit")
+grad_dy = focal(r_dist, w = w_y, na.policy = "omit")
+
+gdx = as.numeric(extract(grad_dx, grid)[[1]])
+gdy = as.numeric(extract(grad_dy, grid)[[1]])
+
+b1_med   = median(zbeta[, "beta[1]"])  # dist
+grad_yx  = gradients$estimate.sx[, "50%"] + b1_med * gdx
+grad_yy  = gradients$estimate.sy[, "50%"] + b1_med * gdy
+grad_mag = sqrt(grad_yx^2 + grad_yy^2)
+
+# Total gradient magnitude of the fitted mean surface (log-Zn per meter).
+p1_df = data.frame(grid, mag = grad_mag)
+p1 = ggplot(p1_df, aes(x, y, fill = mag)) +
+  geom_raster() +
+  scale_fill_viridis_c(name = "|∇ŷ|\n(log-Zn / m)", na.value = NA, labels = tidy_num, guide = fill_guide) +
+  p_theme +
+  labs(title = "Total gradient magnitude\nof fitted surface")
+p1
+```
+
+<img src="man/figures/README-sprates-example-1.png" alt="" width="100%" />
+
+### Gridded Predictive Surface (INLA-SPDE)
+
+For the visual backdrop under the boundary maps, we fit a second, faster
+model (INLA-SPDE) that predicts log(zinc) on every pixel of the study
+area. This model accepts indepedent variables. The wombling math below
+still uses the *original* GP posterior; the SPDE surface is purely a
+filled backdrop so you can see where the boundaries sit in the study
+area. Modelling details are hidden by default, click to expand.
+
+Reference: Gómez-Rubio (2020), *Bayesian inference with INLA* (Chapman &
+Hall/CRC), §7.3.3 — see the [open-access
+gitbook](https://becarioprecario.bitbucket.io/inla-gitbook/ch-spatial.html).
+
+<details>
+
+<summary>
+
+Show INLA-SPDE fit (click to expand)
+</summary>
+
+``` r
+data(meuse,      package = "sp")
+data(meuse.grid, package = "sp")
+
+# EPSG:28992 = Amersfoort / RD New (Dutch national grid).
+rd_new <- CRS(SRS_string = "EPSG:28992")
+coordinates(meuse)      <- ~x+y
+proj4string(meuse)      <- rd_new
+coordinates(meuse.grid) <-  ~x+y
+proj4string(meuse.grid) <- rd_new
+gridded(meuse.grid)     <- TRUE
+
+# Dissolved study-polygon outline (input to the mesh builder).
+meuse.bdy <- sf::st_union(sf::st_as_sf(as(meuse.grid, "SpatialPolygons")))
+pts       <- sf::st_coordinates(meuse.bdy)[, c("X", "Y")]
+
+mesh       <- fmesher::fm_mesh_2d_inla(loc.domain = pts,
+                                       max.edge = c(150, 500),
+                                       offset   = c(100, 250))
+meuse.spde <- inla.spde2.matern(mesh = mesh, alpha = 2)
+A.meuse    <- inla.spde.make.A(mesh = mesh, loc = coordinates(meuse))
+s.index    <- inla.spde.make.index(name = "spatial.field",
+                                   n.spde = meuse.spde$n.spde)
+
+meuse.stack <- inla.stack(
+  data    = list(zinc = meuse$zinc),
+  A       = list(A.meuse, 1),
+  effects = list(c(s.index, list(Intercept = 1)), list(dist = meuse$dist)),
+  tag     = "meuse.data"
+)
+A.pred <- inla.spde.make.A(mesh = mesh, loc = coordinates(meuse.grid))
+meuse.stack.pred <- inla.stack(
+  data    = list(zinc = NA),
+  A       = list(A.pred, 1),
+  effects = list(c(s.index, list(Intercept = 1)),
+                 list(dist = meuse.grid$dist)),
+  tag     = "meuse.pred"
+)
+join.stack <- inla.stack(meuse.stack, meuse.stack.pred)
+
+m1 <- inla(
+  log(zinc) ~ -1 + Intercept + dist + f(spatial.field, model = spde),
+  data              = inla.stack.data(join.stack, spde = meuse.spde),
+  family            = "gaussian",
+  control.predictor = list(A = inla.stack.A(join.stack), compute = TRUE),
+  control.compute   = list(cpo = TRUE, dic = TRUE)
+)
+
+# Shared prediction frame used downstream (wombling backdrop, contour
+# extraction, focal-range view).
+index.pred <- inla.stack.index(join.stack, "meuse.pred")$data
+pred_df <- data.frame(
+  coordinates(meuse.grid),
+  yhat = m1$summary.fitted.values[index.pred, "mean"],
+  ysd  = m1$summary.fitted.values[index.pred, "sd"]
+)
+colnames(pred_df)[1:2] <- c("x", "y")
+```
+
+</details>
+
+``` r
+p_spde <- ggplot(pred_df, aes(x, y, fill = yhat)) + ## prediction plot
+  geom_raster() +
+  scale_fill_viridis_c(name = "log(Zn)", na.value = NA, labels = tidy_num, guide = fill_guide) +
+  obs_points() +
+  p_theme + theme(legend.position = "bottom") +
+  labs(title = "Fitted log(Zinc) surface")
+
+p_spde_sd <- ggplot(pred_df, aes(x, y, fill = ysd)) + ## pred. standard dev plot
+  geom_raster() +
+  scale_fill_viridis_c(name = "Std. Dev.", na.value = NA, labels = tidy_num, guide = fill_guide,
+                       option = "magma", direction = -1) +
+  obs_points() +
+  p_theme + theme(legend.position = "bottom") +
+  labs(title = "Posterior Standard Deviation")
+
+p_spde + p_spde_sd
+```
+
+<img src="man/figures/README-plot-fitted-surfaces-1.png" alt="" width="100%" />
+
+### Wombling Measure: Predictive Inference on Line Integrals
+
+“Wombling” scores a chosen curve by *how much the field changes as you
+move across it*. Here the curve is the log(500) contour, the Dutch
+governments soil-quality zinc threshold, split into its connected pieces
+(river bank vs. inland patches). Each segment has a flux estimate with a
+credible interval; segments whose interval clears zero are drawn as
+**significant boundaries**, real transition candidates, not modelling
+artifacts or noise.
+
+``` r
+# `pred_df` comes from the SPDE fit above. 
+r  = rast(pred_df[, c("x", "y", "yhat")], type = "xyz")
+
+# Extract every connected segment of the log(500) contour.
+cv = as.contour(r, levels = log(500))
+g  = as.data.frame(geom(cv))
+segments = split(g[, c("x", "y")], list(g$geom, g$part), drop = TRUE)
+segments = Filter(function(s) nrow(s) >= 4, segments)  # drop degenerate 1-3 pt pieces
+
+# Subsample each segment. `unique()` drops the duplicate indices `round(seq())`
+# produces when nrow(s) is smaller than length.out. Cap at 100 to keep spwombling cost manageable in 
+# this example.
+sub_segments = lapply(segments, function(s) {
+  idx = unique(round(seq(1, nrow(s), length.out = min(200, nrow(s)))))
+  as.matrix(s[idx, ])
+})
+
+# The wombling backdrop is INLA-SPDE, but the *flux* across each curve comes
+# from the nimble Matérn-1/2 posterior integrated by spwombling.
+wm_list  = lapply(sub_segments, function(cv_mat) {
+  spwombling(coords = coords, curve = cv_mat,
+             model = zbeta, kernel = "matern1")
+})
+sig_list = lapply(wm_list, function(w) w$estimate.wm$sig)
+
+# `curve` is kept as a scalar, convenient for the downstream p_spag
+# coord_fixed, which zooms to the main (longest) boundary segment.
+curve = sub_segments[[which.max(vapply(sub_segments, nrow, integer(1)))]]
+
+p2 = ggplot(pred_df, aes(x, y, fill = yhat)) +
+  geom_raster() +
+  scale_fill_viridis_c(name = "log(Zn)", na.value = NA, labels = tidy_num, guide = fill_guide) +
+  obs_points(colour = "white", size = 0.5, alpha = 0.6) +
+  p_theme
+
+p3 = p2 +
+  wm_curve_layer(sub_segments, sig_list) +
+  labs(title = "Wombling Boundary") + 
+  theme(plot.title = element_text(hjust = 0.5))
+
+p3
+```
+
+<img src="man/figures/README-wombling-example-1.png" alt="" width="100%" />
+
+#### Surface change: focal-range view
+
+Candidate areas for the wombling boundary can also be visually inspected
+with a simple moving window function that calculates the difference
+between focal pixels and their neighbors.
+
+The plot below colours by the focal pixels range (`max − min`) over its
+immediate neighbors. Bright cells are where the fitted zinc surface is
+steepest — a visual proxy for where wombling boundaries might be, before
+they are computed.
+
+``` r
+# See sprates chunk: rebuild SpatRaster after cache reload.
+r = rast(pred_df[, c("x", "y", "yhat")], type = "xyz")
+
+# Bump w_edge for smoother boundaries at the cost of thicker edges; drop it
+# for sharper edges at the cost of grain from the interpolation.
+w_edge = 3
+r_edge = focal(r, w = matrix(1, w_edge, w_edge),
+               fun = \(x) diff(range(x, na.rm = TRUE)))
+edge_df = as.data.frame(r_edge, xy = TRUE, na.rm = TRUE)
+names(edge_df)[3] = "z"
+
+p2_edge = ggplot(edge_df, aes(x, y, fill = z)) +
+  geom_raster(interpolate = TRUE) +
+  scale_fill_viridis_c(name = sprintf("Focal range\n(window = %d)", w_edge),
+                       na.value = NA, labels = tidy_num, guide = fill_guide) +
+  obs_points(colour = "white", size = 0.5, alpha = 0.6) +
+  p_theme +
+  labs(
+    title    = "Pixelwise change",
+    subtitle = "Local variation"
+    )
+
+p2_edge
+```
+
+<img src="man/figures/README-surface-edge-1.png" alt="" width="100%" />
+
+### Spatial Uncertainty in the Boundary
+
+So far we’ve represented *“how sure are we that the field changes
+sharply across this **fixed** line?”*. The natural extension is *“where
+is that line, really?”*. The two plots below turn posterior uncertainty
+about the field into uncertainty about the **boundary itself**. First a
+“spaghetti” of plausible boundaries, then a per-pixel probability of
+exceeding the threshold.
+
+Both need posterior samples of $z(s)$ on a plotting grid.
+`zbeta_samples` only returns $z$ at the observed sites;
+`posterior_boundaries()` extends the field to any grid via the GP
+conditional and returns per-draw + median contour paths ready to plot.
+
+``` r
+# meuse.grid was promoted to SpatialPixelsDataFrame in the SPDE chunk;
+# fall back to the raw data.frame form for the raster below.
+data(meuse.grid, package = "sp")
+r_dist = rast(meuse.grid[, c("x", "y", "dist")], type = "xyz")
+
+# Rectangular subgrid over the meuse.grid bounding box (3x the source stride:
+# 40m -> 120m). Cells outside the study polygon stay NA — contours terminate
+# cleanly at the boundary instead of extrapolating.
+stride_m = 120
+gx      = seq(min(meuse.grid$x), max(meuse.grid$x), by = stride_m)
+gy      = seq(min(meuse.grid$y), max(meuse.grid$y), by = stride_m)
+grid_uc = expand.grid(x = gx, y = gy)
+
+dist_uc = as.numeric(extract(r_dist, as.matrix(grid_uc))[[1]])
+in_poly = !is.na(dist_uc)
+X_in    = cbind(dist = dist_uc[in_poly])
+
+set.seed(1)
+pb = posterior_boundaries(
+  coords  = coords, grid_uc = grid_uc,
+  X_obs   = X,      X_new   = X_in,
+  model   = zbeta,  kernel  = "matern1",
+  c_level = log(500),
+  M       = 50,
+  in_poly = in_poly
+)
+```
+
+#### Viz 1: contour spaghetti
+
+Draw the 500 ppm boundary from each plausible **posterior GP surface**
+and overlay them at low opacity. Where the lines pile up, the boundary
+is well pinned down; where they spread, it isn’t. The solid black line
+is the boundary drawn from the *median* field.
+
+``` r
+p_spag = p2 +
+  wm_spaghetti_layer(pb) +
+  coord_fixed(
+    xlim = range(curve[, 1]) + 200 * c(-1, 1),
+    ylim = range(curve[, 2]) + 200 * c(-1, 1)
+  ) +
+  labs(title    = "Boundary spaghetti",
+       subtitle = sprintf("z = %.2f (M = %d draws)",
+                          pb$c_level, pb$M))
+#> Coordinate system already present.
+#> ℹ Adding new coordinate system, which will replace the existing one.
+p_spag
+```
+
+<img src="man/figures/README-contour-spaghetti-1.png" alt="" width="100%" />
+
+#### Viz 2: pointwise exceedance probability
+
+For every pixel, what fraction of our plausible **posterior GP
+surfaces** put zinc above 500 ppm? Red = almost certainly over the
+threshold, blue = almost certainly under. The solid black line is the
+50/50 boundary; the dashed lines bracket the 5%–95% credible zone — a
+*spatial* credible interval on the boundary itself.
+
+``` r
+p_exc = ggplot() +
+  wm_exceedance_layer(
+    pb,
+    ci            = c(0.05, 0.95),
+    fill_colours  = c("steelblue", "white", "firebrick"),
+    fill_labels   = tidy_num,
+    median_colour = "black",
+    ci_colour     = "black"
+  ) +
+  obs_points(colour = "white", size = 0.5, alpha = 0.6) +
+  p_theme +
+  labs(
+    title = "Boundary exceedance probability"
+  )
+
+p_exc
+```
+
+<img src="man/figures/README-exceedance-heatmap-1.png" alt="" width="100%" />
+
+`p_spag` and `p_exc` are complementary: the spaghetti gives visual
+intuition for boundary variability, the exceedance heatmap turns that
+into a per-pixel probability map.
+
+``` r
+design <- "
+  1334
+  2335
+"
+
+panel = p2_edge + p1 + p3 + p_spag + p_exc +
+  plot_layout(design = design, widths = c(1, 1.3, 1.3, 1)) &
+  theme(
+    legend.position = "right",
+    plot.title    = element_text(size = 10),
+    plot.subtitle = element_blank(),
+    panel.spacing = unit(0, "pt"),
+    plot.margin   = margin(2, 2, 2, 2)
+    )
+
+panel
+```
+
+<img src="man/figures/README-panel-surfaces-1.png" alt="" width="100%" />
 
 ## Authors
-| Name   | Email           |            |
-|:------ |:--------------- | :--------- |
-| Aritra Halder (maintainer)| aritra.halder@drexel.edu | Asst. Professor, Dept. of Biostatistics, Drexel Univ.|
-| Sudipto Banerjee | sudipto@ucla.edu | Professor & Past Chair, Dept. of Biostatistics, UCLA |
-<!--- --->
 
+| Name | Email |  |
+|:---|:---|:---|
+| Aritra Halder (maintainer) | <aritra.halder@drexel.edu> | Asst. Professor, Dept. of Biostatistics, Drexel Univ. |
+| Sudipto Banerjee | <sudipto@ucla.edu> | Professor & Past Chair, Dept. of Biostatistics, UCLA |
